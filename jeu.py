@@ -1,6 +1,7 @@
 # Script contenant le corps du jeu
 import pygame # Importation du module pygame pour gérer le jeu
 from tkinter import messagebox
+from joueur import * # On importe le script joueur pour pouvoir gérer le sprite du joueur
 
 class Jeu:
     "Corps du jeu"
@@ -19,13 +20,21 @@ class Jeu:
 
     def executer(self):
         "Exécuter la boucle de jeu"
+
+        joueur = Joueur(self.screen) # On crée un nouveau joueur
         execution = True # Variable pour tenir compte de l'état de l'exécution du jeu
 
         while execution: # Tant que le jeu est en cours d'exécution
+            self.screen.fill((0, 0,0))
             keys = pygame.key.get_pressed() # On obtient toutes les touches pressées par le joueur
 
             for event in pygame.event.get(): # Pour chaque évènement intercepté durant la boucle de jeu
                 if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]: # Si le joueur a cliqué sur l'icône de fermeture de la fenêtre ou s'il a appuyé sur la touche échap. du clavier
                     if self.quitter() == "yes": # Si le joueur confirme qu'il veut quitter le jeu
                         execution = False # On met execution sur False, de manière à arrêter la boucle de jeu    
+
+            joueur.move(keys) # Permettre au joueur de déplacer son sprite
+            joueur.draw() # Dessiner le sprite du joueur à l'écran
+
+            pygame.display.flip() # Mettre à jour l'affichage du jeu            
 
