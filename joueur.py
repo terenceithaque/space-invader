@@ -17,6 +17,8 @@ class Joueur(pygame.sprite.Sprite):
         self.rect.x = self.x # Position x actuelle du joueur. Au début de la partie, elle vaut self.x
         self.rect.y = self.y # Position y actuelle du joueur. Au début de la partie, elle vaut self.y
 
+        self.munitions = 10 # Nombre de munitions dont le joueur dispose pour tirer sur les aliens
+
     def move(self, key):
         "Déplacer le joueur sur l'écran"
         if key[pygame.K_LEFT]:  # Si le joueur presse la touche "flèche vers la gauche"

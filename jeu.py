@@ -2,7 +2,10 @@
 import pygame # Importation du module pygame pour gérer le jeu
 from tkinter import messagebox
 from joueur import * # On importe le script joueur pour pouvoir gérer le sprite du joueur
+from alien import * # On importe le script alien pour pouvoir gérer les ennemis que le joueur doit éliminer
 from decor import *
+
+
 class Jeu:
     "Corps du jeu"
     def __init__(self):
@@ -23,6 +26,9 @@ class Jeu:
 
         decor = Decor(self.screen) # Ajouter un décor au jeu
         joueur = Joueur(self.screen) # On crée un nouveau joueur
+        aliens = pygame.sprite.Group() # Groupe pour gérer tous les aliens présents à l'écran
+        for i in range(5): # On ajoute 5 aliens au groupe
+            aliens.add(Alien(self.screen))
         execution = True # Variable pour tenir compte de l'état de l'exécution du jeu
 
         while execution: # Tant que le jeu est en cours d'exécution
@@ -37,6 +43,12 @@ class Jeu:
             joueur.move(keys) # Permettre au joueur de déplacer son sprite
             decor.draw() # Dessiner le décor à l'écran
             joueur.draw() # Dessiner le sprite du joueur à l'écran
+            for alien in aliens: # Pour chaque alien
+                alien.move() # Déplacer l'alien sur l'écran
+                alien.draw() # Dessiner l'alien sur l'écran
+                if alien.is_out(): # Si l'alien a dépassé les bordures de l'écran
+                    alien.kill() # On détruit le sprite de cet alien
+                    aliens.add(Alien(self.screen)) # On ajoute un nouvel alien au groupe
 
             
 
