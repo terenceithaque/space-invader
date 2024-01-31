@@ -19,6 +19,7 @@ class Joueur(pygame.sprite.Sprite):
         self.rect.y = self.y # Position y actuelle du joueur. Au début de la partie, elle vaut self.y
 
         self.munitions = 10 # Nombre de munitions dont le joueur dispose pour tirer sur les aliens
+        self.font_muntions = pygame.font.Font(None, 36) # Police pour afficher le nombre de munitions restantes à l'écran
 
     def move(self, key):
         "Déplacer le joueur sur l'écran"
@@ -31,6 +32,18 @@ class Joueur(pygame.sprite.Sprite):
             self.rect.x += 1
             if self.rect.x > 770: # Si le joueur sort de la bordure de la fenêtre
                 self.rect.x = 770 # On le replace à l'intérieur de la fenêtre
+
+    def afficher_munitions_restantes(self):
+        "Afficher les munitions restantes"
+        if self.munitions > 0:
+            texte_munitions_restantes = f"Munitions restantes : {self.munitions}"
+            munitions_restantes = self.font_muntions.render(texte_munitions_restantes, True, (255, 255, 255))
+            self.screen.blit(munitions_restantes, (0,0))
+
+        else:    
+            texte_munitions_restantes = f"Vous êtes à court de munitions !"
+            munitions_restantes = self.font_muntions.render(texte_munitions_restantes, True, (255, 255, 255))
+            self.screen.blit(munitions_restantes, (0,0))
 
 
     def tirer_projectile(self, key, group):

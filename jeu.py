@@ -33,17 +33,23 @@ class Jeu:
             aliens.add(Alien(self.screen))
         execution = True # Variable pour tenir compte de l'état de l'exécution du jeu
 
+        projectile_tire = pygame.USEREVENT + 1 # Evènement pour gérer le tir de projectiles par le joueur
+        pygame.time.set_timer(projectile_tire, 100)
+
         while execution: # Tant que le jeu est en cours d'exécution
+            
             self.screen.fill((0, 0,0))
             keys = pygame.key.get_pressed() # On obtient toutes les touches pressées par le joueur
 
             for event in pygame.event.get(): # Pour chaque évènement intercepté durant la boucle de jeu
                 if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]: # Si le joueur a cliqué sur l'icône de fermeture de la fenêtre ou s'il a appuyé sur la touche échap. du clavier
                     if self.quitter() == "yes": # Si le joueur confirme qu'il veut quitter le jeu
-                        execution = False # On met execution sur False, de manière à arrêter la boucle de jeu    
+                        execution = False # On met execution sur False, de manière à arrêter la boucle de jeu 
+
+                if event.type == projectile_tire:
+                        joueur.tirer_projectile(keys, projectiles)          
 
             joueur.move(keys) # Permettre au joueur de déplacer son sprite
-            joueur.tirer_projectile(keys, projectiles)
             decor.draw() # Dessiner le décor à l'écran
             joueur.draw() # Dessiner le sprite du joueur à l'écran
             for alien in aliens: # Pour chaque alien
@@ -58,7 +64,7 @@ class Jeu:
                 projectile.draw()
 
 
-            
+            joueur.afficher_munitions_restantes()
 
             pygame.display.flip() # Mettre à jour l'affichage du jeu            
 
