@@ -2,7 +2,7 @@
 import pygame # Importation du module pygame pour gérer le jeu
 from tkinter import messagebox
 from joueur import * # On importe le script joueur pour pouvoir gérer le sprite du joueur
-
+from decor import *
 class Jeu:
     "Corps du jeu"
     def __init__(self):
@@ -21,6 +21,7 @@ class Jeu:
     def executer(self):
         "Exécuter la boucle de jeu"
 
+        decor = Decor(self.screen) # Ajouter un décor au jeu
         joueur = Joueur(self.screen) # On crée un nouveau joueur
         execution = True # Variable pour tenir compte de l'état de l'exécution du jeu
 
@@ -34,7 +35,10 @@ class Jeu:
                         execution = False # On met execution sur False, de manière à arrêter la boucle de jeu    
 
             joueur.move(keys) # Permettre au joueur de déplacer son sprite
+            decor.draw() # Dessiner le décor à l'écran
             joueur.draw() # Dessiner le sprite du joueur à l'écran
+
+            
 
             pygame.display.flip() # Mettre à jour l'affichage du jeu            
 
