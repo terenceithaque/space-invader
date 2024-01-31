@@ -1,5 +1,6 @@
 # Script du joueur
 import pygame
+from projectiles import *
 
 class Joueur(pygame.sprite.Sprite):
     "Joueur"
@@ -29,7 +30,20 @@ class Joueur(pygame.sprite.Sprite):
         if key[pygame.K_RIGHT]: # Si le joueur presse la touche "flèche vers la droite" 
             self.rect.x += 1
             if self.rect.x > 770: # Si le joueur sort de la bordure de la fenêtre
-                self.rect.x = 770 # On le replace à l'intérieur de la fenêtre           
+                self.rect.x = 770 # On le replace à l'intérieur de la fenêtre
+
+
+    def tirer_projectile(self, key, group):
+        "Tirer un projectile"
+        if key[pygame.K_SPACE]:  
+            if self.munitions > 0: # S'il reste encore des munitions au joueur
+                print("Tiré un projectile !")
+                group.add(Projectile(self.screen, self, direction = 1))
+                self.munitions -= 1 # On réduit le nombre de munitions restantes
+
+            else:
+                print("Vous êtes à court de munitions !")    
+                           
 
     def draw(self):
         "Dessiner le sprite du joueur à l'écran"

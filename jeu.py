@@ -6,6 +6,7 @@ from alien import * # On importe le script alien pour pouvoir gérer les ennemis
 from decor import *
 
 
+
 class Jeu:
     "Corps du jeu"
     def __init__(self):
@@ -27,6 +28,7 @@ class Jeu:
         decor = Decor(self.screen) # Ajouter un décor au jeu
         joueur = Joueur(self.screen) # On crée un nouveau joueur
         aliens = pygame.sprite.Group() # Groupe pour gérer tous les aliens présents à l'écran
+        projectiles = pygame.sprite.Group() # Groupe pour les projectiles tirés par le joueur
         for i in range(5): # On ajoute 5 aliens au groupe
             aliens.add(Alien(self.screen))
         execution = True # Variable pour tenir compte de l'état de l'exécution du jeu
@@ -41,6 +43,7 @@ class Jeu:
                         execution = False # On met execution sur False, de manière à arrêter la boucle de jeu    
 
             joueur.move(keys) # Permettre au joueur de déplacer son sprite
+            joueur.tirer_projectile(keys, projectiles)
             decor.draw() # Dessiner le décor à l'écran
             joueur.draw() # Dessiner le sprite du joueur à l'écran
             for alien in aliens: # Pour chaque alien
@@ -49,6 +52,11 @@ class Jeu:
                 if alien.is_out(): # Si l'alien a dépassé les bordures de l'écran
                     alien.kill() # On détruit le sprite de cet alien
                     aliens.add(Alien(self.screen)) # On ajoute un nouvel alien au groupe
+
+            for projectile in projectiles:
+                projectile.move()
+                projectile.draw()
+
 
             
 
