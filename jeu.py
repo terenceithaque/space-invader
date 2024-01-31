@@ -8,7 +8,7 @@ class Jeu:
     def __init__(self):
         self.screen_width_height = (800, 600) # Tuple pour contenir les valeurs de la taille de l'écran, en largeur et en hauteur
         self.screen = pygame.display.set_mode((self.screen_width_height)) # On crée une nouvelle fenêtre de jeu à l'aide des valeurs contenues dans le tuple
-        pygame.display.set_caption("Space Invader") # Titre de la fenêtre de jeu
+        pygame.display.set_caption("Space Invaders") # Titre de la fenêtre de jeu
         icone = pygame.image.load("assets/images/alien.jpg") # Icône de la fenêtre du jeu
         pygame.display.set_icon(icone)
 
