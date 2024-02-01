@@ -12,11 +12,14 @@ class Joueur(pygame.sprite.Sprite):
 
         self.x = 370 # Position x de départ du joueur
         self.y = 550 # Position y de départ du joueur
+        
+            
 
         self.rect = self.image.get_rect() # Rectangle du joueur
 
         self.rect.x = self.x # Position x actuelle du joueur. Au début de la partie, elle vaut self.x
         self.rect.y = self.y # Position y actuelle du joueur. Au début de la partie, elle vaut self.y
+        
 
         self.munitions = 10 # Nombre de munitions dont le joueur dispose pour tirer sur les aliens
         self.font_muntions = pygame.font.Font(None, 36) # Police pour afficher le nombre de munitions restantes à l'écran

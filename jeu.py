@@ -30,11 +30,13 @@ class Jeu:
         aliens = pygame.sprite.Group() # Groupe pour gérer tous les aliens présents à l'écran
         projectiles = pygame.sprite.Group() # Groupe pour les projectiles tirés par le joueur
         for i in range(5): # On ajoute 5 aliens au groupe
-            aliens.add(Alien(self.screen))
+            aliens.add(Alien(self.screen, aliens))
         execution = True # Variable pour tenir compte de l'état de l'exécution du jeu
 
         projectile_tire = pygame.USEREVENT + 1 # Evènement pour gérer le tir de projectiles par le joueur
+        alien_spawn = pygame.USEREVENT+ 2 # Evènement pour gérer l'apparition des aliens
         pygame.time.set_timer(projectile_tire, 100)
+        pygame.time.set_timer(alien_spawn, 2000)
 
         while execution: # Tant que le jeu est en cours d'exécution
             
@@ -45,6 +47,11 @@ class Jeu:
                 if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]: # Si le joueur a cliqué sur l'icône de fermeture de la fenêtre ou s'il a appuyé sur la touche échap. du clavier
                     if self.quitter() == "yes": # Si le joueur confirme qu'il veut quitter le jeu
                         execution = False # On met execution sur False, de manière à arrêter la boucle de jeu 
+
+
+                if event.type == alien_spawn:
+                            for i in range(5):
+                                aliens.add(Alien(self.screen, aliens)) # On ajoute un nouvel alien au groupe         
 
                 if event.type == projectile_tire:
                         joueur.tirer_projectile(keys, projectiles)          
@@ -57,7 +64,7 @@ class Jeu:
                 alien.draw() # Dessiner l'alien sur l'écran
                 if alien.is_out(): # Si l'alien a dépassé les bordures de l'écran
                     alien.kill() # On détruit le sprite de cet alien
-                    aliens.add(Alien(self.screen)) # On ajoute un nouvel alien au groupe
+                        
 
             for projectile in projectiles:
                 projectile.move()
