@@ -23,6 +23,8 @@ class Joueur(pygame.sprite.Sprite):
 
         self.munitions = 10 # Nombre de munitions dont le joueur dispose pour tirer sur les aliens
         self.font_muntions = pygame.font.Font(None, 36) # Police pour afficher le nombre de munitions restantes à l'écran
+        self.recharge = pygame.USEREVENT + 3 # Evènement pour gérer la recharge des munitions
+        self.doit_recharger = False # Variable pour vérifier si la recharge des munitions doit être faite ou est en cours
 
     def move(self, key):
         "Déplacer le joueur sur l'écran"
@@ -49,16 +51,31 @@ class Joueur(pygame.sprite.Sprite):
             self.screen.blit(munitions_restantes, (0,0))
 
 
+    def recharger_munitions(self):
+        "Recharger les munitions du joueur"
+        self.munitions = 10
+        self.doit_recharger = False # On ne doit plus recharger les munitions      
+
+
     def tirer_projectile(self, key, group):
         "Tirer un projectile"
+       
+        temps_tir = 0 # Temps où le tir de la dernière munition a eu lieu
         if key[pygame.K_SPACE]:  
             if self.munitions > 0: # S'il reste encore des munitions au joueur
                 print("Tiré un projectile !")
                 group.add(Projectile(self.screen, self, direction = 1))
                 self.munitions -= 1 # On réduit le nombre de munitions restantes
+                if self.munitions == 0: # S'il ne reste plus de munitions après déduction
+                    self.doit_recharger = True # On doit recharger les munitions
+                    temps_tir = pygame.time.get_ticks()
+                    
 
             else:
-                print("Vous êtes à court de munitions !")    
+                print("Vous êtes à court de munitions !")
+
+        
+
                            
 
     def draw(self):

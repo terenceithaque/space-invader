@@ -37,6 +37,7 @@ class Jeu:
         alien_spawn = pygame.USEREVENT+ 2 # Evènement pour gérer l'apparition des aliens
         pygame.time.set_timer(projectile_tire, 100)
         pygame.time.set_timer(alien_spawn, 2000)
+        pygame.time.set_timer(joueur.recharge, 10000)
 
         while execution: # Tant que le jeu est en cours d'exécution
             
@@ -54,7 +55,13 @@ class Jeu:
                                 aliens.add(Alien(self.screen, aliens)) # On ajoute un nouvel alien au groupe         
 
                 if event.type == projectile_tire:
-                        joueur.tirer_projectile(keys, projectiles)          
+                        joueur.tirer_projectile(keys, projectiles)
+
+                if event.type == joueur.recharge and  joueur.doit_recharger: # Si on doit recharger les munitions
+                     joueur.recharger_munitions()        
+                        
+
+                                      
 
             joueur.move(keys) # Permettre au joueur de déplacer son sprite
             decor.draw() # Dessiner le décor à l'écran
