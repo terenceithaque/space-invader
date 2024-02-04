@@ -26,6 +26,8 @@ class Joueur(pygame.sprite.Sprite):
         self.font_etat_ligne_visee = pygame.font.Font(None, 36) # Police pour afficher l'état de la ligne de visée
         self.font_vies_restantes = pygame.font.Font(None, 36) # Police pour afficher le nombre de vies qu'il reste au joueur
         self.font_game_over = pygame.font.Font(None, 36) # Police pour le message à afficher si le joueur meurt
+        self.font_score = pygame.font.Font(None, 36) # Police pour afficher le score du joueur
+        self.font_meilleur_score = pygame.font.Font(None, 36) # Police pour afficher le meilleur score du joueur
 
         self.recharge = pygame.USEREVENT + 3 # Evènement pour gérer la recharge des munitions
         self.doit_recharger = False # Variable pour vérifier si la recharge des munitions doit être faite ou est en cours
@@ -33,6 +35,10 @@ class Joueur(pygame.sprite.Sprite):
 
         self.vies_max = 100 # Nombre de vies maximum du joueur
         self.vies = 100 # Nombre de vies actuel du joueur
+
+        self.score = 0 # Score du joueur. Il augmente au fur et à mesure qu'il abat des aliens
+        self.meilleur_score = 0 # Meilleur score du joueur
+
 
     def move(self, key):
         "Déplacer le joueur sur l'écran"
@@ -112,6 +118,24 @@ class Joueur(pygame.sprite.Sprite):
         texte_message_fin_de_partie = "Vous êtes mort(e) !" 
         message = self.font_game_over.render(texte_message_fin_de_partie, True, ((255, 0, 0, 1)))
         self.screen.blit(message, (50, 50))
+
+
+    def mettre_a_jour_meilleur_score(self):
+        "Mettre à jour le meilleur score du joueur"
+        if self.meilleur_score < self.score:
+            self.meilleur_score = self.score
+
+
+    def afficher_score(self):
+        "Afficher le score actuel ainsi que le meilleur score du joueur"
+        texte_score = f"Score : {self.score}"
+        texte_meilleur_score = f"Meilleur : {self.meilleur_score}"
+        score = self.font_score.render(texte_score, True, (255,255,255))
+        meilleur_score = self.font_meilleur_score.render(texte_meilleur_score, True, (255,255,255))
+
+        self.screen.blit(score, (0, 30))
+        self.screen.blit(meilleur_score, (0, 50))
+
         
 
 

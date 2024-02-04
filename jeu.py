@@ -105,6 +105,8 @@ class Jeu:
 
             joueur.afficher_ligne_visee(keys)
             joueur.afficher_vies_restantes()
+            joueur.mettre_a_jour_meilleur_score()
+            joueur.afficher_score()
 
             if joueur.vies <= 0:
                 joueur.game_over()
