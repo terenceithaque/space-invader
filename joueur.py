@@ -24,10 +24,15 @@ class Joueur(pygame.sprite.Sprite):
         self.munitions = 10 # Nombre de munitions dont le joueur dispose pour tirer sur les aliens
         self.font_muntions = pygame.font.Font(None, 36) # Police pour afficher le nombre de munitions restantes à l'écran
         self.font_etat_ligne_visee = pygame.font.Font(None, 36) # Police pour afficher l'état de la ligne de visée
+        self.font_vies_restantes = pygame.font.Font(None, 36) # Police pour afficher le nombre de vies qu'il reste au joueur
+        self.font_game_over = pygame.font.Font(None, 36) # Police pour le message à afficher si le joueur meurt
 
         self.recharge = pygame.USEREVENT + 3 # Evènement pour gérer la recharge des munitions
         self.doit_recharger = False # Variable pour vérifier si la recharge des munitions doit être faite ou est en cours
         self.ligne_visee_affichee = False # Variable pour savoir si la ligne de visée est affichée ou non
+
+        self.vies_max = 100 # Nombre de vies maximum du joueur
+        self.vies = 100 # Nombre de vies actuel du joueur
 
     def move(self, key):
         "Déplacer le joueur sur l'écran"
@@ -93,6 +98,21 @@ class Joueur(pygame.sprite.Sprite):
 
             else:
                 print("Vous êtes à court de munitions !")
+
+
+    def afficher_vies_restantes(self):
+        "Afficher le nombre de points de vie restants au joueur"
+        vies_restantes = f"Vies restantes {self.vies} / {self.vies_max}" 
+        vies_restantes = self.font_vies_restantes.render(vies_restantes, True, (255,255,255))
+        self.screen.blit(vies_restantes, (0,20))
+
+
+    def game_over(self):
+        "Game Over"
+        texte_message_fin_de_partie = "Vous êtes mort(e) !" 
+        message = self.font_game_over.render(texte_message_fin_de_partie, True, ((255, 0, 0, 1)))
+        self.screen.blit(message, (50, 50))
+        
 
 
                 

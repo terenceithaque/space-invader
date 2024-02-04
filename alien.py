@@ -1,6 +1,7 @@
 # Aliens du jeu
 import pygame
 import random
+from projectiles import *
 
 class Alien(pygame.sprite.Sprite):
     "Alien qui doit être éliminé par le joueur"
@@ -28,6 +29,13 @@ class Alien(pygame.sprite.Sprite):
     def move(self):
         "Déplacer l'alien"
         self.rect.y += self.vitesse
+
+
+    def tirer_projectile(self, group, cible):
+        "Permettre à l'alien de tirer des projectiles contre le joueur"
+        group.add(Projectile(self.screen, self, cible, direction=-1))
+
+
         
 
     def is_out(self):

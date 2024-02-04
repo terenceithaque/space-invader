@@ -1,5 +1,6 @@
 # Script contenant le corps du jeu
 import pygame # Importation du module pygame pour gérer le jeu
+pygame.init()
 from tkinter import messagebox
 from joueur import * # On importe le script joueur pour pouvoir gérer le sprite du joueur
 from alien import * # On importe le script alien pour pouvoir gérer les ennemis que le joueur doit éliminer
@@ -20,6 +21,10 @@ class Jeu:
         "Demander au joueur s'il souhaite quitter le jeu"
         quit = messagebox.askquestion("Voulez-vous quitter le jeu ?", "Cliquez sur 'Oui' pour confirmer la fin de partie.") # Demander au joueur s'il souhaite quitter le jeu
         return quit
+    
+
+    
+
 
 
     def executer(self):
@@ -36,10 +41,12 @@ class Jeu:
         projectile_tire = pygame.USEREVENT + 1 # Evènement pour gérer le tir de projectiles par le joueur
         alien_spawn = pygame.USEREVENT+ 2 # Evènement pour gérer l'apparition des aliens
         alien_move = pygame.USEREVENT + 4 # Evènement pour gérer le déplacement des aliens
+        alien_shot = pygame.USEREVENT + 5 # Evènement pour gérer les tirs de projectiles par les aliens contre le joueur
         pygame.time.set_timer(projectile_tire, 100)
         pygame.time.set_timer(alien_spawn, 10000)
         pygame.time.set_timer(joueur.recharge, 10000)
         pygame.time.set_timer(alien_move, 100)
+        pygame.time.set_timer(alien_shot, 3000)
         n_alien_spawn = 1 # Nombre d'aliens à faire apparaître à chaque vague
 
         while execution: # Tant que le jeu est en cours d'exécution
@@ -61,6 +68,11 @@ class Jeu:
                 if event.type == projectile_tire:
                         #for alien in aliens:
                             joueur.tirer_projectile(keys, projectiles,cible=aliens)
+
+
+                if event.type == alien_shot:
+                     for alien in aliens:
+                          alien.tirer_projectile(projectiles, cible=joueur)            
 
                 if event.type == joueur.recharge and  joueur.doit_recharger: # Si on doit recharger les munitions
                      joueur.recharger_munitions()
@@ -92,6 +104,12 @@ class Jeu:
             joueur.afficher_munitions_restantes()
 
             joueur.afficher_ligne_visee(keys)
+            joueur.afficher_vies_restantes()
+
+            if joueur.vies <= 0:
+                joueur.game_over()
+                pygame.time.wait(5000)
+                execution = False
 
             pygame.display.flip() # Mettre à jour l'affichage du jeu            
 

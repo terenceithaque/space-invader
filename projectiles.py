@@ -20,7 +20,7 @@ class Projectile(pygame.sprite.Sprite):
         self.rect.y = self.y # Position y actuelle du projectile
 
         self.cible = cible # Cible du projectile
-        self.cible_detruite = False # Variable pour indiquer que la cible est détruite ou non
+        #self.cible_detruite = False # Variable pour indiquer que la cible est détruite ou non
 
     def move(self):
         "Déplacer le projectile sur l'écran"
@@ -32,7 +32,7 @@ class Projectile(pygame.sprite.Sprite):
 
     def detruire_cible(self):
         "Détruire la cible quand le projectile la touche"
-        self.cible
+
         if isinstance(self.cible, pygame.sprite.Group): # Si la cible est un groupe d'ennemis
              for cible in self.cible: # On considère que tout membre du groupe est une cible
                   if self.rect.colliderect(cible.rect): # Si le projectile entre en collision avec la cible
@@ -41,12 +41,12 @@ class Projectile(pygame.sprite.Sprite):
                        print("Cible détruite")
                        self.kill() # On détruit le projectile une fois qu'il a touché la cible
                   
-        else: # Sinon, si la cible est un sprite unique
-            if self.rect.colliderect(cible.rect):
+        else: # Sinon, si la cible est un sprite unique, on considère qu'il s'agit du joueur
+            if self.rect.colliderect(self.cible.rect):
                 print("Le projectile est en collision avec la cible")
-                cible.kill()
+                self.cible.vies -=5 # On réduit le nombre de vies du joueur de 1
                 print("Cible détruite !")
-                self.cible_detruite = True
+                #self.cible_detruite = True
                 self.kill()
 
 
