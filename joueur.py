@@ -23,20 +23,40 @@ class Joueur(pygame.sprite.Sprite):
 
         self.munitions = 10 # Nombre de munitions dont le joueur dispose pour tirer sur les aliens
         self.font_muntions = pygame.font.Font(None, 36) # Police pour afficher le nombre de munitions restantes à l'écran
+        self.font_etat_ligne_visee = pygame.font.Font(None, 36) # Police pour afficher l'état de la ligne de visée
+
         self.recharge = pygame.USEREVENT + 3 # Evènement pour gérer la recharge des munitions
         self.doit_recharger = False # Variable pour vérifier si la recharge des munitions doit être faite ou est en cours
+        self.ligne_visee_affichee = False # Variable pour savoir si la ligne de visée est affichée ou non
 
     def move(self, key):
         "Déplacer le joueur sur l'écran"
         if key[pygame.K_LEFT]:  # Si le joueur presse la touche "flèche vers la gauche"
-            self.rect.x -= 1
+            self.rect.x -= 0.80
             if self.rect.x < 0: # Si le joueur sort de la bordure de la fenêtre
                 self.rect.x = 0 # On le replace à l'intérieur de la fenêtre
 
         if key[pygame.K_RIGHT]: # Si le joueur presse la touche "flèche vers la droite" 
-            self.rect.x += 1
+            self.rect.x += 0.80
             if self.rect.x > 770: # Si le joueur sort de la bordure de la fenêtre
                 self.rect.x = 770 # On le replace à l'intérieur de la fenêtre
+
+    def afficher_ligne_visee(self, key):
+        "Afficher une ligne de visée pour aider le joueur à tirer"
+        if key[pygame.K_s]: # Si le joueur appuie sur la touche "s"
+            
+            if not self.ligne_visee_affichee:
+                ligne_visee = pygame.draw.line(self.screen, (255,255,255), (self.rect.x, self.rect.y), (self.rect.x, self.rect.y - 600), width=5)
+                self.ligne_visee_affichee = True
+
+            else:
+                self.ligne_visee_affichee = False 
+
+
+    
+
+
+
 
     def afficher_munitions_restantes(self):
         "Afficher les munitions restantes"
@@ -74,7 +94,10 @@ class Joueur(pygame.sprite.Sprite):
             else:
                 print("Vous êtes à court de munitions !")
 
-        
+
+                
+
+    
 
                            
 

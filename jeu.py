@@ -91,5 +91,7 @@ class Jeu:
 
             joueur.afficher_munitions_restantes()
 
+            joueur.afficher_ligne_visee(keys)
+
             pygame.display.flip() # Mettre à jour l'affichage du jeu            
 
