@@ -30,14 +30,17 @@ class Jeu:
         aliens = pygame.sprite.Group() # Groupe pour gérer tous les aliens présents à l'écran
         projectiles = pygame.sprite.Group() # Groupe pour les projectiles tirés par le joueur
         for i in range(5): # On ajoute 5 aliens au groupe
-            aliens.add(Alien(self.screen, aliens))
+            aliens.add(Alien(self.screen, aliens, joueur))
         execution = True # Variable pour tenir compte de l'état de l'exécution du jeu
 
         projectile_tire = pygame.USEREVENT + 1 # Evènement pour gérer le tir de projectiles par le joueur
         alien_spawn = pygame.USEREVENT+ 2 # Evènement pour gérer l'apparition des aliens
+        alien_move = pygame.USEREVENT + 4 # Evènement pour gérer le déplacement des aliens
         pygame.time.set_timer(projectile_tire, 100)
-        pygame.time.set_timer(alien_spawn, 2000)
+        pygame.time.set_timer(alien_spawn, 10000)
         pygame.time.set_timer(joueur.recharge, 10000)
+        pygame.time.set_timer(alien_move, 100)
+        n_alien_spawn = 1 # Nombre d'aliens à faire apparaître à chaque vague
 
         while execution: # Tant que le jeu est en cours d'exécution
             
@@ -51,14 +54,20 @@ class Jeu:
 
 
                 if event.type == alien_spawn:
-                            for i in range(5):
-                                aliens.add(Alien(self.screen, aliens)) # On ajoute un nouvel alien au groupe         
+                            for i in range(n_alien_spawn):
+                                aliens.add(Alien(self.screen, aliens, joueur)) # On ajoute un nouvel alien au groupe
+                            n_alien_spawn += 1         
 
                 if event.type == projectile_tire:
-                        joueur.tirer_projectile(keys, projectiles)
+                        #for alien in aliens:
+                            joueur.tirer_projectile(keys, projectiles,cible=aliens)
 
                 if event.type == joueur.recharge and  joueur.doit_recharger: # Si on doit recharger les munitions
-                     joueur.recharger_munitions()        
+                     joueur.recharger_munitions()
+
+                if event.type == alien_move: 
+                     for alien in aliens:
+                          alien.move()            
                         
 
                                       
@@ -67,14 +76,16 @@ class Jeu:
             decor.draw() # Dessiner le décor à l'écran
             joueur.draw() # Dessiner le sprite du joueur à l'écran
             for alien in aliens: # Pour chaque alien
-                alien.move() # Déplacer l'alien sur l'écran
                 alien.draw() # Dessiner l'alien sur l'écran
                 if alien.is_out(): # Si l'alien a dépassé les bordures de l'écran
                     alien.kill() # On détruit le sprite de cet alien
+                    
+                    
                         
 
             for projectile in projectiles:
                 projectile.move()
+                projectile.detruire_cible()
                 projectile.draw()
 
 

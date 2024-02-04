@@ -57,14 +57,14 @@ class Joueur(pygame.sprite.Sprite):
         self.doit_recharger = False # On ne doit plus recharger les munitions      
 
 
-    def tirer_projectile(self, key, group):
+    def tirer_projectile(self, key, group, cible):
         "Tirer un projectile"
        
         temps_tir = 0 # Temps où le tir de la dernière munition a eu lieu
         if key[pygame.K_SPACE]:  
             if self.munitions > 0: # S'il reste encore des munitions au joueur
                 print("Tiré un projectile !")
-                group.add(Projectile(self.screen, self, direction = 1))
+                group.add(Projectile(self.screen, self,cible=cible, direction = 1))
                 self.munitions -= 1 # On réduit le nombre de munitions restantes
                 if self.munitions == 0: # S'il ne reste plus de munitions après déduction
                     self.doit_recharger = True # On doit recharger les munitions
