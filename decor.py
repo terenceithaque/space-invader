@@ -1,4 +1,5 @@
 # Décor d'arrière-plan du jeu
+"decor.py contient une classe Decor, qui appelle un fichier image depuis le dossier assets/images afin d'insérer son contenu comme décor pour le jeu."
 import pygame
 
 class Decor:

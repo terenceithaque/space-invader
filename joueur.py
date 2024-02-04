@@ -1,4 +1,5 @@
 # Script du joueur
+"Le fichier joueur.py contient une classe Joueur, héritière de pygame.sprite.Sprite, qui sert à représenter l'avatar du joueur dans le jeu"
 import pygame
 from projectiles import *
 

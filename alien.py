@@ -1,4 +1,6 @@
 # Aliens du jeu
+"""Les aliens sont les ennemis du joueur. Ils sont représentés par une classe Alien, qui hérite elle-même de pygame.sprite.Sprite. Ces aliens peuvent apparaître à des endroits aléatoires sur l'écran et peuvent tirer des projectiles
+afin d'abattre le joueur. Quand le joueur touche un alien, ce dernier est détruit, ce qui lui permet de gagner des points."""
 import pygame
 import random
 from projectiles import *

@@ -1,4 +1,5 @@
 # Script contenant le corps du jeu
+"jeu.py contient toutes les données relatives au démarrage d'une nouvelle partie"
 import pygame # Importation du module pygame pour gérer le jeu
 pygame.init()
 from tkinter import messagebox
@@ -60,26 +61,26 @@ class Jeu:
                         execution = False # On met execution sur False, de manière à arrêter la boucle de jeu 
 
 
-                if event.type == alien_spawn:
+                if event.type == alien_spawn: # Si une apparition d'aliens a lieu
                             for i in range(n_alien_spawn):
                                 aliens.add(Alien(self.screen, aliens, joueur)) # On ajoute un nouvel alien au groupe
                             n_alien_spawn += 1         
 
-                if event.type == projectile_tire:
+                if event.type == projectile_tire: # Si le joueur tire un projectile
                         #for alien in aliens:
                             joueur.tirer_projectile(keys, projectiles,cible=aliens)
 
 
-                if event.type == alien_shot:
+                if event.type == alien_shot: # Si un alien tire un projectile
                      for alien in aliens:
                           alien.tirer_projectile(projectiles, cible=joueur)            
 
                 if event.type == joueur.recharge and  joueur.doit_recharger: # Si on doit recharger les munitions
                      joueur.recharger_munitions()
 
-                if event.type == alien_move: 
-                     for alien in aliens:
-                          alien.move()            
+                if event.type == alien_move: # Si il y a un évènement "déplacement des aliens"
+                     for alien in aliens: # Pour chaque sprite représentant un alien
+                          alien.move()   # On déplace le sprite         
                         
 
                                       

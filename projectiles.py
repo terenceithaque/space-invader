@@ -1,8 +1,9 @@
-# Script pour gérer les projectiles que le joueur peut tirer sur les aliens
+# Script pour gérer les projectiles que le joueur peut tirer sur les aliens, et inversement
+"Le fichier projectiles.py permet de créer et de gérer des projectiles qui proviennent d'une entité particulière et ciblent une autre entité. "
 import pygame
 
 class Projectile(pygame.sprite.Sprite):
-    "Projectile"
+    "Projectile qu'une entité (joueur, alien) peut tirer sur son adversaire afin de le détruire complètement ou de réduire ses points de vie. Ce projetile a un envoyeur, une cible et une direction spécifiques."
     def __init__(self, screen,envoyeur,cible, direction=1):
         super().__init__()
         self.screen = screen # Surface sur laquelle le projectile sera dessiné
