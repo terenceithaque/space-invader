@@ -43,11 +43,13 @@ class Jeu:
         alien_spawn = pygame.USEREVENT+ 2 # Evènement pour gérer l'apparition des aliens
         alien_move = pygame.USEREVENT + 4 # Evènement pour gérer le déplacement des aliens
         alien_shot = pygame.USEREVENT + 5 # Evènement pour gérer les tirs de projectiles par les aliens contre le joueur
+        regeneration_vies_joueur = pygame.USEREVENT + 6 # Evènement pour gérer la régénération des points de vie du joueur
         pygame.time.set_timer(projectile_tire, 100)
         pygame.time.set_timer(alien_spawn, 10000)
         pygame.time.set_timer(joueur.recharge, 10000)
         pygame.time.set_timer(alien_move, 100)
         pygame.time.set_timer(alien_shot, 3000)
+        pygame.time.set_timer(regeneration_vies_joueur, 15000)
         n_alien_spawn = 1 # Nombre d'aliens à faire apparaître à chaque vague
 
         while execution: # Tant que le jeu est en cours d'exécution
@@ -80,14 +82,19 @@ class Jeu:
 
                 if event.type == alien_move: # Si il y a un évènement "déplacement des aliens"
                      for alien in aliens: # Pour chaque sprite représentant un alien
-                          alien.move()   # On déplace le sprite         
+                          alien.move()   # On déplace le sprite 
+
+
+                if event.type == regeneration_vies_joueur: # Si il y un évènement "régénération des vies du joueur"
+                     joueur.regener_vies() # On regénère les points de vie du joueur                  
                         
 
                                       
 
             joueur.move(keys) # Permettre au joueur de déplacer son sprite
             decor.draw() # Dessiner le décor à l'écran
-            joueur.draw() # Dessiner le sprite du joueur à l'écran
+            joueur.draw() # Dessiner le sprite du joueur à l'écran 
+
             for alien in aliens: # Pour chaque alien
                 alien.draw() # Dessiner l'alien sur l'écran
                 if alien.is_out(): # Si l'alien a dépassé les bordures de l'écran
@@ -113,6 +120,9 @@ class Jeu:
                 joueur.game_over()
                 pygame.time.wait(5000)
                 execution = False
+
+
+            joueur.sauvegarder_score() # On sauvegarde le meilleur score du joueur    
 
             pygame.display.flip() # Mettre à jour l'affichage du jeu            
 

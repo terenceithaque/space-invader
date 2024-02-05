@@ -49,6 +49,7 @@ class Projectile(pygame.sprite.Sprite):
             if self.rect.colliderect(self.cible.rect):
                 print("Le projectile est en collision avec la cible")
                 self.cible.vies -=5 # On réduit le nombre de vies du joueur de 1
+                print("Vies restantes :", self.cible.vies)
                 #self.cible_detruite = True
                 self.kill()
 

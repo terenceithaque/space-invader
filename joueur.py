@@ -2,11 +2,30 @@
 "Le fichier joueur.py contient une classe Joueur, héritière de pygame.sprite.Sprite, qui sert à représenter l'avatar du joueur dans le jeu"
 import pygame
 from projectiles import *
+from gestion_joueurs import *
+from tkinter import simpledialog
+import os 
+
 
 class Joueur(pygame.sprite.Sprite):
     "Joueur"
     def __init__(self, screen):
         super().__init__() # On hérite des attributs de la classe Sprite de pygame.sprite
+
+        self.pseudo = simpledialog.askstring("Votre pseudo", "Saisissez votre pseudo :")
+
+        if self.pseudo =="" or self.pseudo == None: # Si le joueur n'a rentré aucun pseudo personnalisé
+            self.pseudo = "Joueur anonyme"
+
+        if self.pseudo == "Joueur anonyme":
+            supprimer_dossier(self.pseudo)
+            print(joueurs_existants())
+
+        if self.pseudo not in joueurs_existants(): # Si le joueur n'a pas un dossier correspondant à son pseudo
+            creer_dossier(self.pseudo) # On crée un nouveau dossier au nom du joueur
+            print(joueurs_existants())
+
+
         self.screen = screen # Surface sur laquelle le joueur sera dessiné
         self.image = pygame.image.load("assets/images/ship.jpg") # Image pour le sprite du joueur
         self.image = pygame.transform.scale(self.image, (30, 30)) # On modifie la taille de l'image en 30x30
@@ -36,9 +55,24 @@ class Joueur(pygame.sprite.Sprite):
 
         self.vies_max = 100 # Nombre de vies maximum du joueur
         self.vies = 100 # Nombre de vies actuel du joueur
+        self.score = 0 # Score actuel du joueur
 
-        self.score = 0 # Score du joueur. Il augmente au fur et à mesure qu'il abat des aliens
-        self.meilleur_score = 0 # Meilleur score du joueur
+        try:
+            self.fichier_score = f"joueurs/{self.pseudo}/score.txt" # Chemin du fichier qui contient le meilleur score du joueur
+            with open(self.fichier_score, "r") as f:
+                self.meilleur_score = int(f.read())
+                f.close()
+
+        except: # Si on ne trouve pas le fichier score.txt dans le dossier correspondant au joueur
+            self.fichier_score = f"joueurs/{self.pseudo}/score.txt"
+            with open(self.fichier_score, "w")as f: # On écrit le fichier au lieu de le lire
+                self.meilleur_score = 0 # On met le meilleur score du joueur à 0
+                f.write(str(self.meilleur_score))
+                f.close()
+
+
+
+
 
 
     def move(self, key):
@@ -116,15 +150,25 @@ class Joueur(pygame.sprite.Sprite):
 
     def game_over(self):
         "Game Over"
+        self.afficher_vies_restantes()
         texte_message_fin_de_partie = "Vous êtes mort(e) !" 
         message = self.font_game_over.render(texte_message_fin_de_partie, True, ((255, 0, 0, 1)))
         self.screen.blit(message, (50, 50))
+        self.sauvegarder_score()
 
 
     def mettre_a_jour_meilleur_score(self):
         "Mettre à jour le meilleur score du joueur"
         if self.meilleur_score < self.score:
             self.meilleur_score = self.score
+
+
+    def sauvegarder_score(self):
+        "Sauvegarder le meilleur score du joueur"
+        with open(self.fichier_score, "w") as f: # On ouvre le fichier de sauvegarde du score en écriture
+            f.write(str(self.meilleur_score)) # On convertit le meilleur score sous forme de chaîne de caractères puis on l'écrit dans le fichier
+            f.close() # On ferme le fichier de sauvegarde
+
 
 
     def afficher_score(self):
@@ -134,8 +178,20 @@ class Joueur(pygame.sprite.Sprite):
         score = self.font_score.render(texte_score, True, (255,255,255))
         meilleur_score = self.font_meilleur_score.render(texte_meilleur_score, True, (255,255,255))
 
-        self.screen.blit(score, (0, 30))
-        self.screen.blit(meilleur_score, (0, 50))
+        self.screen.blit(score, (0, 40))
+        self.screen.blit(meilleur_score, (0, 60))
+
+
+    def regener_vies(self):
+        "Régénérer les vies du joueur"
+        if self.vies < self.vies_max:
+            if self.vies_max - self.vies >= 5: # S'il y a 5 points de vies ou plus de différence entre le nombre max de points de vies et le nombre de PV actuel du joueur
+                self.vies += 5
+
+            if self.vies_max - self.vies < 5 and self.vies_max - self.vies > 0: # S'il y a moins de 5 PV de différence
+                self.vies += (self.vies_max - self.vies)   
+
+
 
         
 
