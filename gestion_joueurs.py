@@ -15,9 +15,10 @@ def creer_dossier(pseudo_du_joueur):
 
 def supprimer_dossier(pseudo_du_joueur):
     "Supprimer un dossier spécifique dans le dossier 'joueurs'"
-    chemin_dossier = os.path.join(f"joueurs/{pseudo_du_joueur}")
-    if os.listdir("joueurs") != []:
-        for file in os.listdir(f"joueurs/{pseudo_du_joueur}"):
-            os.remove(os.path.join(f"{chemin_dossier}/{file}"))
-        os.rmdir(f"joueurs/{pseudo_du_joueur}")
-        print(f"Supprimé {pseudo_du_joueur}")                
+    if pseudo_du_joueur in joueurs_existants():
+        chemin_dossier = os.path.join(f"joueurs/{pseudo_du_joueur}")
+        if os.listdir("joueurs") != []:
+            for file in os.listdir(chemin_dossier):
+                os.remove(os.path.join(f"{chemin_dossier}/{file}"))
+            os.rmdir(f"joueurs/{pseudo_du_joueur}")
+            print(f"Supprimé {pseudo_du_joueur}")                

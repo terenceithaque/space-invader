@@ -108,7 +108,7 @@ class Jeu:
                 projectile.detruire_cible()
                 projectile.draw()
 
-
+            joueur.afficher_pseudo()
             joueur.afficher_munitions_restantes()
 
             joueur.afficher_ligne_visee(keys)

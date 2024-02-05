@@ -3,7 +3,7 @@
 import pygame
 
 class Projectile(pygame.sprite.Sprite):
-    "Projectile qu'une entité (joueur, alien) peut tirer sur son adversaire afin de le détruire complètement ou de réduire ses points de vie. Ce projetile a un envoyeur, une cible et une direction spécifiques."
+    "Projectile qu'une entité (joueur, alien) peut tirer sur son adversaire afin de le détruire complètement ou de réduire ses points de vie. Ce projectile a un envoyeur, une cible et une direction spécifiques."
     def __init__(self, screen,envoyeur,cible, direction=1):
         super().__init__()
         self.screen = screen # Surface sur laquelle le projectile sera dessiné

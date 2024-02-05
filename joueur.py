@@ -42,6 +42,7 @@ class Joueur(pygame.sprite.Sprite):
         
 
         self.munitions = 10 # Nombre de munitions dont le joueur dispose pour tirer sur les aliens
+        self.font_pseudo = pygame.font.Font(None, 36)
         self.font_muntions = pygame.font.Font(None, 36) # Police pour afficher le nombre de munitions restantes à l'écran
         self.font_etat_ligne_visee = pygame.font.Font(None, 36) # Police pour afficher l'état de la ligne de visée
         self.font_vies_restantes = pygame.font.Font(None, 36) # Police pour afficher le nombre de vies qu'il reste au joueur
@@ -101,7 +102,11 @@ class Joueur(pygame.sprite.Sprite):
 
     
 
-
+    def afficher_pseudo(self):
+        "Afficher le pseudo du joueur"
+        affichage = f"Joueur : {self.pseudo}"
+        pseudo_affiche = self.font_pseudo.render(affichage, True, (255,255,255))
+        self.screen.blit(pseudo_affiche, (0,0))
 
 
     def afficher_munitions_restantes(self):
@@ -109,12 +114,12 @@ class Joueur(pygame.sprite.Sprite):
         if self.munitions > 0:
             texte_munitions_restantes = f"Munitions restantes : {self.munitions}"
             munitions_restantes = self.font_muntions.render(texte_munitions_restantes, True, (255, 255, 255))
-            self.screen.blit(munitions_restantes, (0,0))
+            self.screen.blit(munitions_restantes, (0,20))
 
         else:    
             texte_munitions_restantes = f"Vous êtes à court de munitions !"
             munitions_restantes = self.font_muntions.render(texte_munitions_restantes, True, (255, 255, 255))
-            self.screen.blit(munitions_restantes, (0,0))
+            self.screen.blit(munitions_restantes, (0,20))
 
 
     def recharger_munitions(self):
@@ -145,7 +150,7 @@ class Joueur(pygame.sprite.Sprite):
         "Afficher le nombre de points de vie restants au joueur"
         vies_restantes = f"Vies restantes {self.vies} / {self.vies_max}" 
         vies_restantes = self.font_vies_restantes.render(vies_restantes, True, (255,255,255))
-        self.screen.blit(vies_restantes, (0,20))
+        self.screen.blit(vies_restantes, (0,40))
 
 
     def game_over(self):
@@ -178,8 +183,8 @@ class Joueur(pygame.sprite.Sprite):
         score = self.font_score.render(texte_score, True, (255,255,255))
         meilleur_score = self.font_meilleur_score.render(texte_meilleur_score, True, (255,255,255))
 
-        self.screen.blit(score, (0, 40))
-        self.screen.blit(meilleur_score, (0, 60))
+        self.screen.blit(score, (0, 60))
+        self.screen.blit(meilleur_score, (0, 80))
 
 
     def regener_vies(self):
