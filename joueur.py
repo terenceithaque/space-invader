@@ -187,7 +187,7 @@ class Joueur(pygame.sprite.Sprite):
         self.screen.blit(meilleur_score, (0, 80))
 
 
-    def regener_vies(self):
+    def regenerer_vies(self):
         "Régénérer les vies du joueur"
         if self.vies < self.vies_max:
             if self.vies_max - self.vies >= 5: # S'il y a 5 points de vies ou plus de différence entre le nombre max de points de vies et le nombre de PV actuel du joueur

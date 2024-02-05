@@ -86,7 +86,7 @@ class Jeu:
 
 
                 if event.type == regeneration_vies_joueur: # Si il y un évènement "régénération des vies du joueur"
-                     joueur.regener_vies() # On regénère les points de vie du joueur                  
+                     joueur.regenerer_vies() # On regénère les points de vie du joueur                  
                         
 
                                       
