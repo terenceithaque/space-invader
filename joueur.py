@@ -54,8 +54,8 @@ class Joueur(pygame.sprite.Sprite):
         self.doit_recharger = False # Variable pour vérifier si la recharge des munitions doit être faite ou est en cours
         self.ligne_visee_affichee = False # Variable pour savoir si la ligne de visée est affichée ou non
 
-        self.vies_max = 100 # Nombre de vies maximum du joueur
-        self.vies = 100 # Nombre de vies actuel du joueur
+        self.vies_max = 200 # Nombre de vies maximum du joueur
+        self.vies = 200 # Nombre de vies actuel du joueur
         self.score = 0 # Score actuel du joueur
 
         try:
