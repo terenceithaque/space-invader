@@ -118,11 +118,13 @@ class Jeu:
 
             if joueur.vies <= 0:
                 joueur.game_over()
+                pygame.display.flip()
                 pygame.time.wait(5000)
                 execution = False
 
 
             joueur.sauvegarder_score() # On sauvegarde le meilleur score du joueur    
 
-            pygame.display.flip() # Mettre à jour l'affichage du jeu            
+            if joueur.vies > 0: # S'il reste encore des vies au joueur
+                pygame.display.flip() # Mettre à jour l'affichage du jeu            
 

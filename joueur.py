@@ -158,7 +158,7 @@ class Joueur(pygame.sprite.Sprite):
         self.afficher_vies_restantes()
         texte_message_fin_de_partie = "Vous êtes mort(e) !" 
         message = self.font_game_over.render(texte_message_fin_de_partie, True, ((255, 0, 0, 1)))
-        self.screen.blit(message, (50, 50))
+        self.screen.blit(message, (50, 300))
         self.sauvegarder_score()
 
 
