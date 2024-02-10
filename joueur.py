@@ -5,6 +5,13 @@ from projectiles import *
 from gestion_joueurs import *
 from tkinter import simpledialog
 import os 
+#pygame.init()
+pygame.mixer.pre_init(44100, -16, 2, 2048)
+
+
+def init_player_mixer():
+    pygame.mixer.init()
+
 
 
 class Joueur(pygame.sprite.Sprite):
@@ -137,6 +144,9 @@ class Joueur(pygame.sprite.Sprite):
                 print("Tiré un projectile !")
                 group.add(Projectile(self.screen, self,cible=cible, direction = 1))
                 self.munitions -= 1 # On réduit le nombre de munitions restantes
+                son_tir = pygame.mixer.Sound("assets/sons/tir_projectile.wav") # Son joué lors du tir du projectile
+                volume = son_tir.set_volume(1.0)
+                channel = son_tir.play() # Jouer le son
                 if self.munitions == 0: # S'il ne reste plus de munitions après déduction
                     self.doit_recharger = True # On doit recharger les munitions
                     temps_tir = pygame.time.get_ticks()

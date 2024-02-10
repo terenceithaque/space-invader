@@ -1,11 +1,15 @@
 # Script contenant le corps du jeu
 "jeu.py contient toutes les données relatives au démarrage d'une nouvelle partie"
 import pygame # Importation du module pygame pour gérer le jeu
-pygame.init()
+#pygame.init()
+pygame.mixer.pre_init(44100, -16, 2, 2048)
+pygame.mixer.init()
 from tkinter import messagebox
 from joueur import * # On importe le script joueur pour pouvoir gérer le sprite du joueur
 from alien import * # On importe le script alien pour pouvoir gérer les ennemis que le joueur doit éliminer
 from decor import *
+
+
 
 
 
@@ -17,6 +21,9 @@ class Jeu:
         pygame.display.set_caption("Space Invaders") # Titre de la fenêtre de jeu
         icone = pygame.image.load("assets/images/alien.jpg") # Icône de la fenêtre du jeu
         pygame.display.set_icon(icone)
+        init_player_mixer() # Initialiser pygame.mixer pour le joueur
+        init_alien_mixer() # Initialiser pygame.mixer pour les aliens
+        
 
     def quitter(self):
         "Demander au joueur s'il souhaite quitter le jeu"
@@ -44,6 +51,7 @@ class Jeu:
         alien_move = pygame.USEREVENT + 4 # Evènement pour gérer le déplacement des aliens
         alien_shot = pygame.USEREVENT + 5 # Evènement pour gérer les tirs de projectiles par les aliens contre le joueur
         regeneration_vies_joueur = pygame.USEREVENT + 6 # Evènement pour gérer la régénération des points de vie du joueur
+        vie_joueur_faible = pygame.USEREVENT + 7 # Evènement qui se déroule quand la vie du joueur est faible
         pygame.time.set_timer(projectile_tire, 100)
         pygame.time.set_timer(alien_spawn, 10000)
         pygame.time.set_timer(joueur.recharge, 10000)
@@ -51,8 +59,11 @@ class Jeu:
         pygame.time.set_timer(alien_shot, 3000)
         pygame.time.set_timer(regeneration_vies_joueur, 15000)
         n_alien_spawn = 1 # Nombre d'aliens à faire apparaître à chaque vague
-
+        alerte_vie_faible =  pygame.mixer.Sound("assets/sons/vie_faible.mp3") # Son à déclencher quand la vie du joueur est faible
         while execution: # Tant que le jeu est en cours d'exécution
+
+            if joueur.vies <=20:
+                 pygame.event.post(pygame.event.Event(vie_joueur_faible))
             
             self.screen.fill((0, 0,0))
             keys = pygame.key.get_pressed() # On obtient toutes les touches pressées par le joueur
@@ -84,11 +95,18 @@ class Jeu:
                      for alien in aliens: # Pour chaque sprite représentant un alien
                           alien.move()   # On déplace le sprite 
 
+                if event.type == vie_joueur_faible and joueur.vies <= 20: # Si le nombre de vies restantes au joueur est faible
+                        print("Vie du joueur inférieure ou égale à 20 PV")
+                        
+                        channel = alerte_vie_faible.play(-1)
+
+                if joueur.vies > 20: # Si le nombre de vies restantes au joueur dépasse 20
+                     alerte_vie_faible.stop()  # On arrête l'alerte
 
                 if event.type == regeneration_vies_joueur: # Si il y un évènement "régénération des vies du joueur"
                      joueur.regenerer_vies() # On regénère les points de vie du joueur                  
                         
-
+                  
                                       
 
             joueur.move(keys) # Permettre au joueur de déplacer son sprite
@@ -116,11 +134,15 @@ class Jeu:
             joueur.mettre_a_jour_meilleur_score()
             joueur.afficher_score()
 
-            if joueur.vies <= 0:
-                joueur.game_over()
-                pygame.display.flip()
-                pygame.time.wait(5000)
-                execution = False
+            
+
+              
+
+            if joueur.vies <= 0: # Si le joueur a perdu toutes ses vies
+                joueur.game_over() # Afficher le message de fin de partie
+                pygame.display.flip() # Mettre à jour l'affichage
+                pygame.time.wait(5000) # Attendre 5 secondes
+                execution = False # Quitter le jeu
 
 
             joueur.sauvegarder_score() # On sauvegarde le meilleur score du joueur    

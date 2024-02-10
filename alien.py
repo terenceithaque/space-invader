@@ -4,6 +4,12 @@ afin d'abattre le joueur. Quand le joueur touche un alien, ce dernier est détru
 import pygame
 import random
 from projectiles import *
+#pygame.init()
+
+pygame.mixer.pre_init(44100, -16, 2, 2048)
+def init_alien_mixer():
+    pygame.mixer.init()
+
 
 class Alien(pygame.sprite.Sprite):
     "Alien qui doit être éliminé par le joueur"
@@ -36,6 +42,11 @@ class Alien(pygame.sprite.Sprite):
     def tirer_projectile(self, group, cible):
         "Permettre à l'alien de tirer des projectiles contre le joueur"
         group.add(Projectile(self.screen, self, cible, direction=-1))
+        son_tir = pygame.mixer.Sound("assets/sons/tir_projectile.wav") # Son pour le tir du projectile
+        channel = son_tir.play() # Jouer le son
+
+        """if channel.get_busy():
+            pygame.time.delay(1)"""
 
 
         
