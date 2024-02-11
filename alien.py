@@ -13,7 +13,7 @@ def init_alien_mixer():
 
 class Alien(pygame.sprite.Sprite):
     "Alien qui doit être éliminé par le joueur"
-    def __init__(self, screen, group, joueur):
+    def __init__(self, screen, group, joueur, degats_supp):
         super().__init__() # On hérite des attributs de la classe Sprite
         self.screen = screen # Surface sur laquelle l'alien sera dessiné
         self.image = pygame.image.load("assets/images/alien.jpg") # Image pour représenter le sprite de l'alien
@@ -34,6 +34,8 @@ class Alien(pygame.sprite.Sprite):
 
         self.vitesse = random.uniform(0.80, 1) # Vitesse de déplacement de l'alien
 
+        self.attaque = 5 + degats_supp # Nombre de points de dégâts causés par les tirs de l'alien
+
     def move(self):
         "Déplacer l'alien"
         self.rect.y += self.vitesse
@@ -53,7 +55,9 @@ class Alien(pygame.sprite.Sprite):
 
     def is_out(self):
         "Vérifier si l'alien sort des bordures de l'écran"
-        return self.rect.y > 700        
+        return self.rect.y > 700
+
+           
 
     def draw(self):
         "Afficher l'alien à l'écran"

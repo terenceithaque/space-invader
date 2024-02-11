@@ -21,6 +21,7 @@ class Joueur(pygame.sprite.Sprite):
 
         self.pseudo = simpledialog.askstring("Votre pseudo", "Saisissez votre pseudo :")
 
+
         if self.pseudo =="" or self.pseudo == None: # Si le joueur n'a rentré aucun pseudo personnalisé
             self.pseudo = "Joueur anonyme"
 
@@ -64,6 +65,9 @@ class Joueur(pygame.sprite.Sprite):
         self.vies_max = 200 # Nombre de vies maximum du joueur
         self.vies = 200 # Nombre de vies actuel du joueur
         self.score = 0 # Score actuel du joueur
+
+        self.kills = 0 # Nombre de kills total effectués par le joueur
+        self.last_kills = 0 # Nombre de kills récents effectués par le joueur
 
         try:
             self.fichier_score = f"joueurs/{self.pseudo}/score.txt" # Chemin du fichier qui contient le meilleur score du joueur

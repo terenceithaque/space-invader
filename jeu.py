@@ -42,8 +42,9 @@ class Jeu:
         joueur = Joueur(self.screen) # On crée un nouveau joueur
         aliens = pygame.sprite.Group() # Groupe pour gérer tous les aliens présents à l'écran
         projectiles = pygame.sprite.Group() # Groupe pour les projectiles tirés par le joueur
+        degats_aliens_supp = 0 # Dégâts supplémentaires infligés par les aliens
         for i in range(5): # On ajoute 5 aliens au groupe
-            aliens.add(Alien(self.screen, aliens, joueur))
+            aliens.add(Alien(self.screen, aliens, joueur, degats_aliens_supp))
         execution = True # Variable pour tenir compte de l'état de l'exécution du jeu
 
         projectile_tire = pygame.USEREVENT + 1 # Evènement pour gérer le tir de projectiles par le joueur
@@ -60,6 +61,7 @@ class Jeu:
         pygame.time.set_timer(regeneration_vies_joueur, 15000)
         n_alien_spawn = 1 # Nombre d'aliens à faire apparaître à chaque vague
         alerte_vie_faible =  pygame.mixer.Sound("assets/sons/vie_faible.mp3") # Son à déclencher quand la vie du joueur est faible
+        
         while execution: # Tant que le jeu est en cours d'exécution
 
             if joueur.vies <=20:
@@ -76,7 +78,8 @@ class Jeu:
 
                 if event.type == alien_spawn: # Si une apparition d'aliens a lieu
                             for i in range(n_alien_spawn):
-                                aliens.add(Alien(self.screen, aliens, joueur)) # On ajoute un nouvel alien au groupe
+                                aliens.add(Alien(self.screen, aliens, joueur, degats_aliens_supp)) # On ajoute un nouvel alien au groupe
+
                             n_alien_spawn += 1         
 
                 if event.type == projectile_tire: # Si le joueur tire un projectile
@@ -117,6 +120,15 @@ class Jeu:
                 alien.draw() # Dessiner l'alien sur l'écran
                 if alien.is_out(): # Si l'alien a dépassé les bordures de l'écran
                     alien.kill() # On détruit le sprite de cet alien
+
+            if joueur.last_kills >= 20: # Si le joueur a tué 20 aliens récemment
+                     print("20 aliens tués récemment")
+                     degats_aliens_supp += 5
+                     for alien in aliens:
+                        if alien.attaque == 5:
+                            alien.attaque += degats_aliens_supp
+                        print("Attaque des aliens :", alien.attaque)
+                     joueur.last_kills = 0 # On remet à 0 le nombre de kills récents        
                     
                     
                         

@@ -44,11 +44,14 @@ class Projectile(pygame.sprite.Sprite):
                        self.envoyeur.score += 1 # Puisque l'on considère que les membres du groupe sont les aliens, alors on augmente le score du joueur quand il en abat un
                        print("Cible détruite")
                        self.kill() # On détruit le projectile une fois qu'il a touché la cible
+                       self.envoyeur.kills += 1 # On augmente le nombre de kills réalisés par le joueur
+                       self.envoyeur.last_kills += 1 # On met à jour le nombre des derniers kills
+                       print("Derniers kills :", self.envoyeur.last_kills)
                   
         else: # Sinon, si la cible est un sprite unique, on considère qu'il s'agit du joueur
             if self.rect.colliderect(self.cible.rect):
                 print("Le projectile est en collision avec la cible")
-                self.cible.vies -=5 # On réduit le nombre de vies du joueur de 1
+                self.cible.vies -=self.envoyeur.attaque # On réduit le nombre de vies du joueur d'autant de points que vaut l'attaque de l'envoyeur
                 print("Vies restantes :", self.cible.vies)
                 #self.cible_detruite = True
                 self.kill()
