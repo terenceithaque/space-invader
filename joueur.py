@@ -57,6 +57,7 @@ class Joueur(pygame.sprite.Sprite):
         self.font_game_over = pygame.font.Font(None, 36) # Police pour le message à afficher si le joueur meurt
         self.font_score = pygame.font.Font(None, 36) # Police pour afficher le score du joueur
         self.font_meilleur_score = pygame.font.Font(None, 36) # Police pour afficher le meilleur score du joueur
+        self.font_vie_faible = pygame.font.Font(None, 36) # Police pour afficher un message de vie faible au joueur
 
         self.recharge = pygame.USEREVENT + 3 # Evènement pour gérer la recharge des munitions
         self.doit_recharger = False # Variable pour vérifier si la recharge des munitions doit être faite ou est en cours
@@ -165,6 +166,17 @@ class Joueur(pygame.sprite.Sprite):
         vies_restantes = f"Vies restantes {self.vies} / {self.vies_max}" 
         vies_restantes = self.font_vies_restantes.render(vies_restantes, True, (255,255,255))
         self.screen.blit(vies_restantes, (0,40))
+
+
+    def afficher_vie_faible(self):
+        "Afficher un message de vie faible clignotant au joueur"
+        hide = False # Variable pour indiquer s'il faut cacher le message ou non
+        if not hide: # S'il faut afficher le message
+            print("Affichage du message de vie faible")
+            message = "Vies très faibles !" # Chaîne de caractères à afficher dans le message
+            vie_faible = self.font_vie_faible.render(message, True, (255, 0, 0)) # Afficher le message en rouge (code RGB. 255, 0, 0)
+            self.screen.blit(vie_faible, (50, 300))
+        hide = not hide # Affecter True à hide pour ne pas afficher le message
 
 
     def game_over(self):
