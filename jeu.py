@@ -2,13 +2,13 @@
 "jeu.py contient toutes les données relatives au démarrage d'une nouvelle partie"
 import pygame # Importation du module pygame pour gérer le jeu
 #pygame.init()
-pygame.mixer.pre_init(44100, -16, 2, 2048)
+#pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.mixer.init()
 from tkinter import messagebox
 from joueur import * # On importe le script joueur pour pouvoir gérer le sprite du joueur
 from alien import * # On importe le script alien pour pouvoir gérer les ennemis que le joueur doit éliminer
 from decor import *
-
+from gestion_joueurs import supprimer_caracteres_interdits
 
 
 
@@ -66,7 +66,7 @@ class Jeu:
             aliens.add(Alien(self.screen, aliens, joueur, degats_aliens_supp))
         execution = True # Variable pour tenir compte de l'état de l'exécution du jeu
         
-
+        
         projectile_tire = pygame.USEREVENT + 1 # Evènement pour gérer le tir de projectiles par le joueur
         alien_spawn = pygame.USEREVENT+ 2 # Evènement pour gérer l'apparition des aliens
         alien_move = pygame.USEREVENT + 4 # Evènement pour gérer le déplacement des aliens
@@ -74,16 +74,25 @@ class Jeu:
         regeneration_vies_joueur = pygame.USEREVENT + 6 # Evènement pour gérer la régénération des points de vie du joueur
         vie_joueur_faible = pygame.USEREVENT + 7 # Evènement qui se déroule quand la vie du joueur est faible
         pause = pygame.USEREVENT + 8 # Evènement pour la mise en pause du jeu
+        joueur_invulnerable = pygame.USEREVENT + 9 # Evènement pour les frames d'invulnérabilté du joueur
+        joueur_vulnerable = pygame.USEREVENT + 10
         pygame.time.set_timer(projectile_tire, 100)
         pygame.time.set_timer(alien_spawn, 10000)
         pygame.time.set_timer(joueur.recharge, 10000)
         pygame.time.set_timer(alien_move, 100)
         pygame.time.set_timer(alien_shot, 3000)
-        pygame.time.set_timer(regeneration_vies_joueur, 15000)
+        pygame.time.set_timer(regeneration_vies_joueur, 25000)
         pygame.time.set_timer(pause, 100)
+        pygame.time.set_timer(joueur_invulnerable, 500)
+        pygame.time.set_timer(joueur_vulnerable, 75)
         n_alien_spawn = 1 # Nombre d'aliens à faire apparaître à chaque vague
         alerte_vie_faible =  pygame.mixer.Sound("assets/sons/vie_faible.mp3") # Son à déclencher quand la vie du joueur est faible
 
+
+        music = pygame.mixer.music.load("assets/sons/music.mp3")
+        pygame.mixer.music.play(-1)
+
+        
 
         
 
@@ -117,7 +126,19 @@ class Jeu:
                                 if not self.pause:
                                     aliens.add(Alien(self.screen, aliens, joueur, degats_aliens_supp)) # On ajoute un nouvel alien au groupe
 
-                            n_alien_spawn += 1         
+                            n_alien_spawn += 1  # Augmenter le nombre d'aliens à faire apparaître la prochaine fois    
+
+
+                if event.type == joueur_invulnerable: # En cas de frame d'invulnérabilité
+                     joueur.vulnerable = False # Le joueur est invulnérable aux coups adverses
+                     #print("Le joueur est invulnérable !")
+
+
+                if event.type == joueur_vulnerable:
+                     joueur.vulnerable = True     
+                     #print("Le joueur est vulnérable !")
+
+
 
                 if event.type == projectile_tire: # Si le joueur tire un projectile
                         #for alien in aliens:
@@ -131,8 +152,8 @@ class Jeu:
                           alien.tirer_projectile(projectiles, cible=joueur)            
 
                 if event.type == joueur.recharge and  joueur.doit_recharger: # Si on doit recharger les munitions
-                     if not self.pause:
-                        joueur.recharger_munitions()
+                     if not self.pause: # Si le jeu n'est pas en pause
+                        joueur.recharger_munitions() # Recharger les munitions du joueur
 
                 if event.type == alien_move: # Si il y a un évènement "déplacement des aliens"
                      if not self.pause:
@@ -140,13 +161,15 @@ class Jeu:
                           alien.move()   # On déplace le sprite 
 
                 if event.type == vie_joueur_faible and joueur.vies <= 20: # Si le nombre de vies restantes au joueur est faible
-                        if not self.pause:
-                            print("Vie du joueur inférieure ou égale à 20 PV")
-                            joueur.afficher_vie_faible() # Afficher un message de vie faible au joueur
-                            channel = alerte_vie_faible.play(-1)
-
-                        else:
-                             channel = alerte_vie_faible.stop()
+                        pygame.mixer.music.set_volume(0.5) # Réduire le volume de la musique
+                        print("Vie du joueur inférieure ou égale à 20 PV")
+                        joueur.afficher_vie_faible() # Afficher un message de vie faible au joueur
+                        #if not pygame.mixer.Channel(0).get_busy():
+                        alerte_vie_faible.play(-1)
+                        """ pygame.mixer.Channel(0).stop()
+                                 pygame.mixer.music.set_volume(1.0) # Remettre le volume original de la musique
+                        """
+                        
 
                 if event.type == pause and keys[pygame.K_p]: # Si le joueur presse la touche P
 
@@ -155,6 +178,7 @@ class Jeu:
 
                 if joueur.vies > 20: # Si le nombre de vies restantes au joueur dépasse 20
                      alerte_vie_faible.stop()  # On arrête l'alerte
+                     pygame.mixer.music.set_volume(1.0)
 
                 if event.type == regeneration_vies_joueur: # Si il y un évènement "régénération des vies du joueur"
                      if not self.pause:
@@ -166,7 +190,7 @@ class Jeu:
                 joueur.move(keys) # Permettre au joueur de déplacer son sprite
                 
                 
-
+                
                 if joueur.last_kills >= 20: # Si le joueur a tué 20 aliens récemment
                      print("20 aliens tués récemment")
                      degats_aliens_supp += 5
@@ -204,16 +228,26 @@ class Jeu:
 
             
 
+            
+
+            
+
               
 
             if joueur.vies <= 0: # Si le joueur a perdu toutes ses vies
+                alerte_vie_faible.stop()
+                pygame.mixer.music.set_volume(1.0)
+                if pygame.mixer.music.get_pos() != 97: # Si la musique n'est pas à 1 minute 37 secondes
+                    pygame.mixer.music.set_pos(97) # Jouer la fin de la musique
                 joueur.game_over() # Afficher le message de fin de partie
                 pygame.display.flip() # Mettre à jour l'affichage
-                pygame.time.wait(5000) # Attendre 5 secondes
+                pygame.time.wait(15000) # Attendre 5 secondes
                 execution = False # Quitter le jeu
 
 
-            joueur.sauvegarder_score() # On sauvegarde le meilleur score du joueur    
+            joueur.sauvegarder_score() # On sauvegarde le meilleur score du joueur
+
+            
 
             if joueur.vies > 0: # S'il reste encore des vies au joueur
                 pygame.display.flip() # Mettre à jour l'affichage du jeu            

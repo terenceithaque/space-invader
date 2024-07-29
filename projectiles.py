@@ -51,9 +51,11 @@ class Projectile(pygame.sprite.Sprite):
         else: # Sinon, si la cible est un sprite unique, on considère qu'il s'agit du joueur
             if self.rect.colliderect(self.cible.rect):
                 print("Le projectile est en collision avec la cible")
-                self.cible.vies -=self.envoyeur.attaque # On réduit le nombre de vies du joueur d'autant de points que vaut l'attaque de l'envoyeur
-                print("Vies restantes :", self.cible.vies)
-                #self.cible_detruite = True
+                if self.cible.vulnerable: # Si la cible ne subit pas une frame d'invicibilité
+
+                    self.cible.vies -=self.envoyeur.attaque # On réduit le nombre de vies du joueur d'autant de points que vaut l'attaque de l'envoyeur
+                    print("Vies restantes :", self.cible.vies)
+                    #self.cible_detruite = True
                 self.kill()
 
 
