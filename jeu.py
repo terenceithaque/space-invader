@@ -8,7 +8,6 @@ from tkinter import messagebox
 from joueur import * # On importe le script joueur pour pouvoir gérer le sprite du joueur
 from alien import * # On importe le script alien pour pouvoir gérer les ennemis que le joueur doit éliminer
 from decor import *
-from gestion_joueurs import supprimer_caracteres_interdits
 
 
 

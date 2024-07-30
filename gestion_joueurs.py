@@ -2,6 +2,7 @@
 "gestion_joueurs.py permet de gérer les différents joueurs du jeu de manière indépendante"
 import os # On importe les fonctionnalités du système d'exploitation afin de pouvoir accéder à différentes fonctionnalités pour le dossier "joueurs"
 import platform
+from tkinter import messagebox
 
 def joueurs_existants():
     "Trouver un joueur un existant. Pour cela, on se base sur une liste de dossier présents dans le dossier joueur, chacun d'entre eux représentant un profil de joueur indépendant des autres"
@@ -18,6 +19,11 @@ def supprimer_caracteres_interdits(pseudo, replace_car="_"):
 
     elif platform.system() == "Linux": # Si le système d'exploitation est basé sur Linux
         caracteres_interdits = ["/"] # Liste des caractères interdits dans un nom de fichier ou de dossier pour les systèmes Linux
+
+    if any(car in pseudo for car in caracteres_interdits): # Si un ou plusieurs caractères interdits sont détectés dans le pseudo
+        # Informer le joueur que son pseudo contient des caractères interdits
+        messagebox.showinfo("Caractères interdits détectés", f"Le pseudo que vous avez saisi contient des caractères interdits. Durant la partie, ces caractères seront remplacés par un {replace_car}.")
+
 
     for car in caracteres_interdits: # Pour chaque caractère interdit selon le système d'exploitation
         if car in pseudo: # Si le caractère interdit est présent dans le pseudo
