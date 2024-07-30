@@ -22,10 +22,10 @@ class Alien(pygame.sprite.Sprite):
         self.x = random.randint(15, 500) # Position x de départ de l'alien
         self.y = 50 # Position y de départ de l'alien
         for alien in group: # Pour chaque autre alien appartenant au même groupe que l'alien que nous créons
-            self.x = alien.x + 40
+            self.x = alien.x + 40 # Ajouter 40 pixels aux coordonnées x de l'alien
 
-        if self.x > 500:
-            self.x = 500    
+        if self.x > 500: # Si la position x de l'alien dépasse 500
+            self.x = 500   # Mettre la position x à 500 afin d'empêcher l'alien de sortir de l'écran
 
             
         self.rect = self.image.get_rect() # Rectangle de l'alien
