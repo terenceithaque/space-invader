@@ -9,8 +9,9 @@ def joueurs_existants():
     return os.listdir("joueurs") # On retourne tous les dossiers présents dans le dossier "joueurs", en considérant que chacun de ces dossiers représente un joueur
 
 
-def supprimer_caracteres_interdits(pseudo, replace_car="_"):
-    "Retirer les caractères interdits d'un pseudo selon le système d'exploitation et retourner le pseudo sans ces caractères"
+def supprimer_caracteres_interdits(pseudo="", replace_car="_"):
+    """Retirer les caractères interdits d'un pseudo selon le système d'exploitation et retourner le pseudo sans ces caractères.
+     Avertit également le joueur de la présence de caractères interdits dans le pseudo."""
     if platform.system() == "Windows": # Si le système d'exploitation est Windows
         caracteres_interdits = ["<", ">", ":", '"', "/", "'\'","|", "?", "*"] # Liste des caractères interdits dans un nom de fichier ou de dossier pour Windows
 

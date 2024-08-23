@@ -179,8 +179,8 @@ class Jeu:
                      alerte_vie_faible.stop()  # On arrête l'alerte
                      pygame.mixer.music.set_volume(1.0)
 
-                if event.type == regeneration_vies_joueur: # Si il y un évènement "régénération des vies du joueur"
-                     if not self.pause:
+                if event.type == regeneration_vies_joueur: # Si il y a un évènement "régénération des vies du joueur"
+                     if not self.pause: # Si le jeu n'a pas été mis en pause
                         joueur.regenerer_vies() # On regénère les points de vie du joueur                  
                         
                   

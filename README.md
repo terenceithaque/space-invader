@@ -2,7 +2,7 @@ Empêchez les aliens d'envahir votre planète !
 
 Aux commandes d'un vaisseau, vous devez détruire le plus de vaisseaux ennemis possible afin d'engranger des points. Faites toutefois attention à vos munitions et à vos vies, car elles sont toutes les deux limitées et en manquer à un moment pourrait vous être préjudiciable.
 
-En début de partie, il vous sera demandé de saisir un pseudo afin de retrouver vos scores à la prochaine partie. Si vous décidez d'ignorer cette étape, ils ne seront stockés que temporairement.
+En début de partie, il vous sera demandé de saisir un pseudo afin de retrouver vos scores à la prochaine partie. Si vous décidez d'ignorer cette étape, ils ne seront stockés que temporairement sous le pseudo de "Joueur anonyme" (si quelqu'un d'autre prend ce pseudo, alors les scores liés à l'ancien "Joueur anonyme" sont définitivement perdus).
 
 Le jeu est découpé en 7 scripts différents, chacun ayant un rôle particulier. Les voici:
     - main.py : démarre une nouvelle partie à la demande
