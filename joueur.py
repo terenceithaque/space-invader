@@ -4,7 +4,10 @@ import pygame
 from projectiles import *
 from gestion_joueurs import *
 from tkinter import simpledialog
+from tkinter import messagebox
 import os 
+from save import *
+import json
 pygame.init()
 pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.font.init()
@@ -40,7 +43,17 @@ class Joueur(pygame.sprite.Sprite):
             creer_dossier(self.pseudo) # On crée un nouveau dossier au nom du joueur
             print(joueurs_existants())
 
+        donnees_sauvegarde = {}   # Données de sauvegarde du jeu
+        if sauvegarde_presente(self.pseudo): # Si une sauvegarde est présente pour le joueur actuel
+            # Demander au joueur s'il souhaite la charger
+            charger_sauvegade = messagebox.askquestion("Charger la sauvegarde ?", "Une sauvegarde a été détectée. Souhaitez-vous reprendre depuis cette dernière ?")
+            if charger_sauvegade == "yes": # Si le joueur veut charger la sauvegarde
+                donnees_sauvegarde = load_save(self.pseudo) # Charger la sauvegarde
+                print(f"Données de sauvegarde de {self.pseudo} :", donnees_sauvegarde.items())
+                for item in donnees_sauvegarde.items():
+                    print(item)
 
+                 
         self.screen = screen # Surface sur laquelle le joueur sera dessiné
         self.image = pygame.image.load("assets/images/ship.jpg") # Image pour le sprite du joueur
         self.image = pygame.transform.scale(self.image, (30, 30)) # On modifie la taille de l'image en 30x30
@@ -52,11 +65,34 @@ class Joueur(pygame.sprite.Sprite):
 
         self.rect = self.image.get_rect() # Rectangle du joueur
 
-        self.rect.x = self.x # Position x actuelle du joueur. Au début de la partie, elle vaut self.x
-        self.rect.y = self.y # Position y actuelle du joueur. Au début de la partie, elle vaut self.y
-        
+        if isinstance(donnees_sauvegarde, dict) and donnees_sauvegarde: # Si les données de sauvegarde ne sont pas vides
+            self.rect.x = donnees_sauvegarde.get("rect_x") # Position x actuelle du joueur, telle qu'indiquée dans la sauvegarde
+            self.rect.y = donnees_sauvegarde.get("rect_y") # Position y actuelle du joueur, telle qu'indiquée dans la sauvegarde
+            self.munitions = donnees_sauvegarde.get("munitions") # Nombre de munitions dont le joueur dispose pour tirer sur les aliens
+            if self.munitions > 10: # Si le joueur a mis plus de 10 munitions dans le fichier de sauvegarde
+                self.munitions = 10
 
-        self.munitions = 10 # Nombre de munitions dont le joueur dispose pour tirer sur les aliens
+            if self.munitions == 0: # Si le joueur n'avait plus de muniions au moment de la sauvegarde
+                self.munitions = 1 # Donner une munition au joueur pour le début de parties    
+    
+            self.vies_max = 200 # Nombre de vies maximum du joueur
+            self.vies = donnees_sauvegarde.get("vies") # Nombre de vies actuel du joueur, tels qu'indiqués par la sauvegarde
+            if self.vies > self.vies_max:  # Si le joueur a mis plus de points de vie que permis dans le fichier de sauvegarde
+                self.vies = self.vies_max # Mettre le nombre de points de vie au maximum
+
+
+            self.score = donnees_sauvegarde.get("score") # Score actuel du joueur
+            
+        
+        else:
+            self.rect.x = self.x # Position x actuelle du joueur. Au début de la partie, elle vaut self.x
+            self.rect.y = self.y # Position y actuelle du joueur. Au début de la partie, elle vaut self.y
+            self.munitions = 10 # Nombre de munitions dont le joueur dispose pour tirer sur les aliens
+            self.vies_max = 200 # Nombre de points de vie maximum du joueur
+            self.vies = self.vies_max
+            self.score = 0 # Score actuel du joueur
+
+        
         self.font_pseudo = pygame.font.Font(None, 36)
         self.font_muntions = pygame.font.Font(None, 36) # Police pour afficher le nombre de munitions restantes à l'écran
         self.font_etat_ligne_visee = pygame.font.Font(None, 36) # Police pour afficher l'état de la ligne de visée
@@ -70,9 +106,7 @@ class Joueur(pygame.sprite.Sprite):
         self.doit_recharger = False # Variable pour vérifier si la recharge des munitions doit être faite ou est en cours
         self.ligne_visee_affichee = False # Variable pour savoir si la ligne de visée est affichée ou non
 
-        self.vies_max = 200 # Nombre de vies maximum du joueur
-        self.vies = self.vies_max # Nombre de vies actuel du joueur. Au départ, le joueur possède le nombre maximum de points de vie
-        self.score = 0 # Score actuel du joueur
+        
 
         self.kills = 0 # Nombre de kills total effectués par le joueur
         self.last_kills = 0 # Nombre de kills récents effectués par le joueur
@@ -109,7 +143,7 @@ class Joueur(pygame.sprite.Sprite):
 
     def afficher_ligne_visee(self, key):
         "Afficher une ligne de visée pour aider le joueur à tirer"
-        if key[pygame.K_s]: # Si le joueur appuie sur la touche "s"
+        if key[pygame.K_h]: # Si le joueur appuie sur la touche "h"
             
             if not self.ligne_visee_affichee:
                 ligne_visee = pygame.draw.line(self.screen, (255,255,255), (self.rect.x, self.rect.y), (self.rect.x, self.rect.y - 600), width=5)

@@ -8,6 +8,7 @@ from tkinter import messagebox
 from joueur import * # On importe le script joueur pour pouvoir gérer le sprite du joueur
 from alien import * # On importe le script alien pour pouvoir gérer les ennemis que le joueur doit éliminer
 from decor import *
+from save import *
 
 
 
@@ -184,7 +185,7 @@ class Jeu:
                         joueur.regenerer_vies() # On regénère les points de vie du joueur                  
                         
                   
-                                      
+            ask_save(keys, joueur)  # S'il appuie sur la touche S, demander au joueur s'il veut sauvegarder la partie                      
             if not self.pause:
                 joueur.move(keys) # Permettre au joueur de déplacer son sprite
                 
