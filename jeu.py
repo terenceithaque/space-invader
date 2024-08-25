@@ -31,8 +31,8 @@ class Jeu:
         quit = messagebox.askquestion("Voulez-vous quitter le jeu ?", "Cliquez sur 'Oui' pour confirmer la fin de partie.") # Demander au joueur s'il souhaite quitter le jeu
         return quit
     
-    def mettre_pause(self):
-             "Mettre le jeu en pause"
+    def mettre_enlever_pause(self):
+             "Mettre le jeu en pause ou enlever la pause"
              
              if not self.pause:
                  self.pause = True # On passe le jeu en pause
@@ -78,7 +78,7 @@ class Jeu:
         joueur_vulnerable = pygame.USEREVENT + 10
         pygame.time.set_timer(projectile_tire, 100)
         pygame.time.set_timer(alien_spawn, 10000)
-        pygame.time.set_timer(joueur.recharge, 10000)
+        pygame.time.set_timer(joueur.recharge, 15000)
         pygame.time.set_timer(alien_move, 100)
         pygame.time.set_timer(alien_shot, 3000)
         pygame.time.set_timer(regeneration_vies_joueur, 25000)
@@ -173,7 +173,7 @@ class Jeu:
 
                 if event.type == pause and keys[pygame.K_p]: # Si le joueur presse la touche P
 
-                    self.mettre_pause() # On met le jeu en pause
+                    self.mettre_enlever_pause() # On met le jeu en pause
                 
 
                 if joueur.vies > 20: # Si le nombre de vies restantes au joueur dépasse 20
@@ -184,8 +184,13 @@ class Jeu:
                      if not self.pause: # Si le jeu n'a pas été mis en pause
                         joueur.regenerer_vies() # On regénère les points de vie du joueur                  
                         
-                  
-            ask_save(keys, joueur)  # S'il appuie sur la touche S, demander au joueur s'il veut sauvegarder la partie                      
+
+            if keys[pygame.K_s]: # Si le joueur appuie sur la touche s du clavier     
+                self.mettre_enlever_pause() # Activer la pause
+                ask_save(keys, joueur)  # S'il appuie sur la touche S, demander au joueur s'il veut sauvegarder la partie                      
+                self.mettre_enlever_pause() # Enlever la pause
+
+                
             if not self.pause:
                 joueur.move(keys) # Permettre au joueur de déplacer son sprite
                 

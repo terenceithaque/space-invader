@@ -13,7 +13,7 @@ if __name__ == "__main__": # Si le programme s'exécute
     pygame.quit()
     
 
-    del jeu # Supprimer la partie de la mémoire
+    del jeu # Supprimer la partie précédente de la mémoire
     #pygame.time.wait(5000) # Attendre pendant 5 secondes
     while True:
         rejouer = messagebox.askyesno("Rejouer ?", "Voulez-vous rejouer ?") # Demander au joueur s'il souhaite rejouer
@@ -26,4 +26,4 @@ if __name__ == "__main__": # Si le programme s'exécute
             del jeu
 
         else: # Sinon
-            break # Quitter le jeu"""     
+            break # Quitter le jeu  
