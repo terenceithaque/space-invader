@@ -131,12 +131,12 @@ class Joueur(pygame.sprite.Sprite):
 
     def move(self, key):
         "Déplacer le joueur sur l'écran"
-        if key[pygame.K_LEFT]:  # Si le joueur presse la touche "flèche vers la gauche"
+        if key[pygame.K_LEFT] or key[pygame.K_q]:  # Si le joueur presse la touche "flèche vers la gauche" ou la touche Q du clavier
             self.rect.x -= 0.80
             if self.rect.x < 0: # Si le joueur sort de la bordure de la fenêtre
                 self.rect.x = 0 # On le replace à l'intérieur de la fenêtre
 
-        if key[pygame.K_RIGHT]: # Si le joueur presse la touche "flèche vers la droite" 
+        if key[pygame.K_RIGHT] or key[pygame.K_d]: # Si le joueur presse la touche "flèche vers la droite" ou la touche D du clavier
             self.rect.x += 0.80
             if self.rect.x > 770: # Si le joueur sort de la bordure de la fenêtre
                 self.rect.x = 770 # On le replace à l'intérieur de la fenêtre
