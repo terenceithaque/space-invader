@@ -78,7 +78,7 @@ class Jeu:
         joueur_vulnerable = pygame.USEREVENT + 10
         pygame.time.set_timer(projectile_tire, 100)
         pygame.time.set_timer(alien_spawn, 10000)
-        pygame.time.set_timer(joueur.recharge, 15000)
+        pygame.time.set_timer(joueur.recharge, 30000)
         pygame.time.set_timer(alien_move, 100)
         pygame.time.set_timer(alien_shot, 3000)
         pygame.time.set_timer(regeneration_vies_joueur, 25000)
