@@ -102,10 +102,23 @@ class Jeu:
 
             if not self.pause:
                  self.screen.fill((0,0,0))
+
+
+            # Gérer la couleur d'affichage des points de vie du joueur
+            if joueur.vies <= 200 and joueur.vies >= 120:  # Si l'état de santé du joueur est compris entre 120 et 200 PV
+                 joueur.changer_couleur_affichage_vie("green")   # Couleur d'affichage en vert
+
+
+            if joueur.vies <= 110 and joueur.vies > 80:   # Si l'état de santé du joueur est compris entre 110 et 80 PV   
+                 joueur.changer_couleur_affichage_vie("orange") # Couleur d'affichage en orange
+
+
+            if joueur.vies <= 80: # Si l'état de santé du joueur  est inférieur ou égal à 80 PV
+                 joueur.changer_couleur_affichage_vie("red") # Couleur d'affichage en rouge   
             
             
             
-            if joueur.vies <=20:
+            if joueur.vies <=80:
                  pygame.event.post(pygame.event.Event(vie_joueur_faible))
             
             
@@ -160,9 +173,9 @@ class Jeu:
                         for alien in aliens: # Pour chaque sprite représentant un alien
                           alien.move()   # On déplace le sprite 
 
-                if event.type == vie_joueur_faible and joueur.vies <= 20: # Si le nombre de vies restantes au joueur est faible
+                if event.type == vie_joueur_faible and joueur.vies <= 80: # Si le nombre de vies restantes au joueur est faible
                         pygame.mixer.music.set_volume(0.5) # Réduire le volume de la musique
-                        print("Vie du joueur inférieure ou égale à 20 PV")
+                        print(f"Vie du joueur inférieure ou égale à {joueur.vies} PV")
                         joueur.afficher_vie_faible() # Afficher un message de vie faible au joueur
                         #if not pygame.mixer.Channel(0).get_busy():
                         alerte_vie_faible.play(-1)
@@ -176,7 +189,7 @@ class Jeu:
                     self.mettre_enlever_pause() # On met le jeu en pause
                 
 
-                if joueur.vies > 20: # Si le nombre de vies restantes au joueur dépasse 20
+                if joueur.vies > 80: # Si le nombre de vies restantes au joueur dépasse 20
                      alerte_vie_faible.stop()  # On arrête l'alerte
                      pygame.mixer.music.set_volume(1.0)
 

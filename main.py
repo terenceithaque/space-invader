@@ -7,6 +7,9 @@ pygame.init() # Initialisation de pygame
 pygame.display.init()
 from tkinter import messagebox
 
+
+
+
 if __name__ == "__main__": # Si le programme s'exécute
     jeu = Jeu() # On démarre une nouvelle partie
     jeu.executer()

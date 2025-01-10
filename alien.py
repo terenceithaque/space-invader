@@ -34,7 +34,8 @@ class Alien(pygame.sprite.Sprite):
 
         self.vitesse = random.uniform(0.80, 1) # Vitesse de déplacement de l'alien
 
-        self.attaque = 5 + degats_supp # Nombre de points de dégâts causés par les tirs de l'alien
+        
+        self.attaque = 20 + degats_supp # Nombre de points de dégâts causés par les tirs de l'alien
 
     def move(self):
         "Déplacer l'alien"

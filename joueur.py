@@ -102,6 +102,8 @@ class Joueur(pygame.sprite.Sprite):
         self.font_meilleur_score = pygame.font.Font(None, 36) # Police pour afficher le meilleur score du joueur
         self.font_vie_faible = pygame.font.Font(None, 36) # Police pour afficher un message de vie faible au joueur
 
+
+        self.couleur_affichage_vie = "green" # Couleur d'affichage des points de vie
         self.recharge = pygame.USEREVENT + 3 # Evènement pour gérer la recharge des munitions
         self.doit_recharger = False # Variable pour vérifier si la recharge des munitions doit être faite ou est en cours
         self.ligne_visee_affichee = False # Variable pour savoir si la ligne de visée est affichée ou non
@@ -205,8 +207,13 @@ class Joueur(pygame.sprite.Sprite):
     def afficher_vies_restantes(self):
         "Afficher le nombre de points de vie restants au joueur"
         vies_restantes = f"Vies restantes {self.vies} / {self.vies_max}" 
-        vies_restantes = self.font_vies_restantes.render(vies_restantes, True, (255,255,255))
+        vies_restantes = self.font_vies_restantes.render(vies_restantes, True, (self.couleur_affichage_vie))
         self.screen.blit(vies_restantes, (0,40))
+
+
+    def changer_couleur_affichage_vie(self, couleur:str):
+        "Change l'affichage des points de vie du joueur avec la couleur indiquée"
+        self.couleur_affichage_vie = couleur
 
 
     def afficher_vie_faible(self):
@@ -257,8 +264,8 @@ class Joueur(pygame.sprite.Sprite):
     def regenerer_vies(self):
         "Régénérer les vies du joueur"
         if self.vies < self.vies_max:
-            if self.vies_max - self.vies >= 5: # S'il y a 5 points de vies ou plus de différence entre le nombre max de points de vies et le nombre de PV actuel du joueur
-                self.vies += 5
+            if self.vies_max - self.vies >= 20: # S'il y a 20 points de vies ou plus de différence entre le nombre max de points de vies et le nombre de PV actuel du joueur
+                self.vies += 20
 
             if self.vies_max - self.vies < 5 and self.vies_max - self.vies > 0: # S'il y a moins de 5 PV de différence
                 self.vies += (self.vies_max - self.vies)   
