@@ -24,17 +24,19 @@ class Joueur(pygame.sprite.Sprite):
         super().__init__() # On hérite des attributs de la classe Sprite de pygame.sprite
 
         self.pseudo = simpledialog.askstring("Votre pseudo", "Saisissez votre pseudo :", initialvalue="Joueur anonyme") # Demander au joueur de saisir son pseudo, mettre "Joueur anonyme" par défaut.
-        self.pseudo = supprimer_caracteres_interdits(self.pseudo, replace_car="_") # Supprimer les caractères interdits contenus par le pseudo du joueur
-
-        self.vulnerable = True # Est-ce que le joueur est invulnérable aux coups adverses ?
-
-
         if self.pseudo =="" or self.pseudo == None: # Si le joueur n'a rentré aucun pseudo personnalisé
             self.pseudo = "Joueur anonyme"
 
         if self.pseudo == "Joueur anonyme":
             supprimer_dossier(self.pseudo)
             print(joueurs_existants())
+        
+        self.pseudo = supprimer_caracteres_interdits(self.pseudo, replace_car="_") # Supprimer les caractères interdits contenus par le pseudo du joueur
+
+        self.vulnerable = True # Est-ce que le joueur est invulnérable aux coups adverses ?
+
+
+       
 
 
             
