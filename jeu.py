@@ -210,10 +210,10 @@ class Jeu:
                 
                 
                 if joueur.last_kills >= 20: # Si le joueur a tué 20 aliens récemment
-                     print("20 aliens tués récemment")
-                     degats_aliens_supp += 5
+                     print(f"{joueur.last_kills} aliens tués récemment")
+                     degats_aliens_supp += 10
                      for alien in aliens:
-                        if alien.attaque == 5:
+                        if alien.attaque == 20:
                             alien.attaque += degats_aliens_supp
                         print("Attaque des aliens :", alien.attaque)
                      joueur.last_kills = 0 # On remet à 0 le nombre de kills récents 
