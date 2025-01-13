@@ -9,6 +9,7 @@ from joueur import * # On importe le script joueur pour pouvoir gérer le sprite
 from alien import * # On importe le script alien pour pouvoir gérer les ennemis que le joueur doit éliminer
 from decor import *
 from save import *
+import path
 
 
 
@@ -19,7 +20,7 @@ class Jeu:
         self.screen_width_height = (800, 600) # Tuple pour contenir les valeurs de la taille de l'écran, en largeur et en hauteur
         self.screen = pygame.display.set_mode((self.screen_width_height)) # On crée une nouvelle fenêtre de jeu à l'aide des valeurs contenues dans le tuple
         pygame.display.set_caption("Space Invaders") # Titre de la fenêtre de jeu
-        icone = pygame.image.load("assets/images/alien.jpg") # Icône de la fenêtre du jeu
+        icone = pygame.image.load(path.Path("assets/images/alien.jpg")) # Icône de la fenêtre du jeu
         pygame.display.set_icon(icone)
         init_player_mixer() # Initialiser pygame.mixer pour le joueur
         init_alien_mixer() # Initialiser pygame.mixer pour les aliens
@@ -86,10 +87,10 @@ class Jeu:
         pygame.time.set_timer(joueur_invulnerable, 500)
         pygame.time.set_timer(joueur_vulnerable, 75)
         n_alien_spawn = 1 # Nombre d'aliens à faire apparaître à chaque vague
-        alerte_vie_faible =  pygame.mixer.Sound("assets/sons/vie_faible.mp3") # Son à déclencher quand la vie du joueur est faible
+        alerte_vie_faible =  pygame.mixer.Sound(path.Path("assets/sons/vie_faible.mp3")) # Son à déclencher quand la vie du joueur est faible
 
 
-        music = pygame.mixer.music.load("assets/sons/music.mp3")
+        music = pygame.mixer.music.load(path.Path("assets/sons/music.mp3"))
         pygame.mixer.music.play(-1)
 
         

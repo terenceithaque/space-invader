@@ -1,6 +1,7 @@
 # Script pour gérer les projectiles que le joueur peut tirer sur les aliens, et inversement
 "Le fichier projectiles.py permet de créer et de gérer des projectiles qui proviennent d'une entité particulière et ciblent une autre entité. "
 import pygame
+import path
 
 class Projectile(pygame.sprite.Sprite):
     "Projectile qu'une entité (joueur, alien) peut tirer sur son adversaire afin de le détruire complètement ou de réduire ses points de vie. Ce projectile a un envoyeur, une cible et une direction spécifiques."
@@ -8,7 +9,7 @@ class Projectile(pygame.sprite.Sprite):
         super().__init__()
         self.screen = screen # Surface sur laquelle le projectile sera dessiné
         self.direction = direction # Direction dans laquelle le projectile se dirigera (1 pour avancer, -1 pour reculer)
-        self.image = pygame.image.load("assets/images/fireball.jpg") # Image pour le sprite du projectile
+        self.image = pygame.image.load(path.Path("assets/images/fireball.jpg")) # Image pour le sprite du projectile
 
         self.image = pygame.transform.scale(self.image, (10,10)) # On modifie les dimensions de l'image en 10x10
 

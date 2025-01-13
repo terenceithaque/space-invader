@@ -4,6 +4,7 @@ afin d'abattre le joueur. Quand le joueur touche un alien, ce dernier est détru
 import pygame
 import random
 from projectiles import *
+import path
 #pygame.init()
 
 pygame.mixer.pre_init(44100, -16, 2, 2048)
@@ -16,7 +17,7 @@ class Alien(pygame.sprite.Sprite):
     def __init__(self, screen, group, joueur, degats_supp):
         super().__init__() # On hérite des attributs de la classe Sprite
         self.screen = screen # Surface sur laquelle l'alien sera dessiné
-        self.image = pygame.image.load("assets/images/alien.jpg") # Image pour représenter le sprite de l'alien
+        self.image = pygame.image.load(path.Path("assets/images/alien.jpg")) # Image pour représenter le sprite de l'alien
         self.image = pygame.transform.scale(self.image, (30, 30)) # On modifie la taille de l'image en 30x30
 
         self.x = random.randint(15, 500) # Position x de départ de l'alien
@@ -45,7 +46,7 @@ class Alien(pygame.sprite.Sprite):
     def tirer_projectile(self, group, cible):
         "Permettre à l'alien de tirer des projectiles contre le joueur"
         group.add(Projectile(self.screen, self, cible, direction=-1))
-        son_tir = pygame.mixer.Sound("assets/sons/tir_projectile.wav") # Son pour le tir du projectile
+        son_tir = pygame.mixer.Sound(path.Path("assets/sons/tir_projectile.wav")) # Son pour le tir du projectile
         channel = son_tir.play() # Jouer le son
 
         """if channel.get_busy():

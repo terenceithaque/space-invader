@@ -3,6 +3,7 @@ import json # Importer le module json pour gérer les données de sauvegarde
 import os
 from tkinter import messagebox # Importer le module messagebox de tkinter pour créer des boîtes de dialogue
 import pygame
+import path
 
 pygame.init()
 
@@ -32,9 +33,9 @@ def sauvegarder(joueur):
         
         
         
-    dossier_joueur = f"joueurs/{pseudo_joueur}" # Dossier du joueur
+    dossier_joueur = path.Path(f"joueurs/{pseudo_joueur}") # Dossier du joueur
     save_file = "save.json" # Fichier de sauvegarde
-    save_file = os.path.abspath(os.path.join(dossier_joueur, save_file))
+    save_file = path.Path(os.path.abspath(os.path.join(dossier_joueur, save_file)))
     print("Chemin du fichier de sauvegarde :", save_file)
     donnees_a_sauvegarder = {
             "pseudo":pseudo_joueur,

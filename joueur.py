@@ -11,6 +11,8 @@ import json
 pygame.init()
 pygame.mixer.pre_init(44100, -16, 2, 2048)
 pygame.font.init()
+import path
+
 
 
 def init_player_mixer():
@@ -57,7 +59,7 @@ class Joueur(pygame.sprite.Sprite):
 
                  
         self.screen = screen # Surface sur laquelle le joueur sera dessiné
-        self.image = pygame.image.load("assets/images/ship.jpg") # Image pour le sprite du joueur
+        self.image = pygame.image.load(path.Path("assets/images/ship.jpg")) # Image pour le sprite du joueur
         self.image = pygame.transform.scale(self.image, (30, 30)) # On modifie la taille de l'image en 30x30
 
         self.x = 370 # Position x de départ du joueur
@@ -116,13 +118,13 @@ class Joueur(pygame.sprite.Sprite):
         self.last_kills = 0 # Nombre de kills récents effectués par le joueur
 
         try:
-            self.fichier_score = f"joueurs/{self.pseudo}/score.txt" # Chemin du fichier qui contient le meilleur score du joueur
+            self.fichier_score = path.Path(f"joueurs/{self.pseudo}/score.txt") # Chemin du fichier qui contient le meilleur score du joueur
             with open(self.fichier_score, "r") as f:
                 self.meilleur_score = int(f.read())
                 f.close()
 
         except: # Si on ne trouve pas le fichier score.txt dans le dossier correspondant au joueur
-            self.fichier_score = f"joueurs/{self.pseudo}/score.txt"
+            self.fichier_score = path.Path(f"joueurs/{self.pseudo}/score.txt")
             with open(self.fichier_score, "w")as f: # On écrit le fichier au lieu de le lire
                 self.meilleur_score = 0 # On met le meilleur score du joueur à 0
                 f.write(str(self.meilleur_score))
