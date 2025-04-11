@@ -12,6 +12,7 @@ def init_alien_mixer():
     pygame.mixer.init()
 
 
+
 class Alien(pygame.sprite.Sprite):
     "Alien qui doit être éliminé par le joueur"
     def __init__(self, screen, group, joueur, degats_supp):
@@ -20,13 +21,13 @@ class Alien(pygame.sprite.Sprite):
         self.image = pygame.image.load(path.Path("assets/images/alien.jpg")) # Image pour représenter le sprite de l'alien
         self.image = pygame.transform.scale(self.image, (30, 30)) # On modifie la taille de l'image en 30x30
 
-        self.x = random.randint(15, 500) # Position x de départ de l'alien
+        self.x = random.randint(15, 550) # Position x de départ de l'alien
         self.y = 50 # Position y de départ de l'alien
         for alien in group: # Pour chaque autre alien appartenant au même groupe que l'alien que nous créons
             self.x = alien.x + 40 # Ajouter 40 pixels aux coordonnées x de l'alien
 
-        if self.x > 500: # Si la position x de l'alien dépasse 500
-            self.x = 500   # Mettre la position x à 500 afin d'empêcher l'alien de sortir de l'écran
+        if self.x > 550: # Si la position x de l'alien dépasse 550
+            self.x = 550   # Mettre la position x à 550 afin d'empêcher l'alien de sortir de l'écran
 
             
         self.rect = self.image.get_rect() # Rectangle de l'alien

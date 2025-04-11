@@ -60,6 +60,16 @@ class Projectile(pygame.sprite.Sprite):
                 self.kill()
 
 
+
+    def is_out(self):
+        "Vérifie si le projectile est en dehors de l'écran"
+        if self.direction == 1: 
+            return self.rect.y > 700
+
+        elif self.direction == -1:
+            return self.rect.y < - 700                
+
+
     def draw(self):
         "Afficher le projectile à l'écran"
         self.screen.blit(self.image, (self.rect.x, self.rect.y))               

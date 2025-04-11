@@ -7,8 +7,11 @@ import path
 
 def joueurs_existants():
     "Trouver un joueur un existant. Pour cela, on se base sur une liste de dossier présents dans le dossier joueur, chacun d'entre eux représentant un profil de joueur indépendant des autres"
-    return os.listdir(path.Path("joueurs")) # On retourne tous les dossiers présents dans le dossier "joueurs", en considérant que chacun de ces dossiers représente un joueur
-
+    try:
+        return os.listdir(path.Path("joueurs")) # On retourne tous les dossiers présents dans le dossier "joueurs", en considérant que chacun de ces dossiers représente un joueur
+    except:
+        os.mkdir("joueurs")
+        return []
 
 def supprimer_caracteres_interdits(pseudo="", replace_car="_"):
     """Retirer les caractères interdits d'un pseudo selon le système d'exploitation et retourner le pseudo sans ces caractères.

@@ -126,7 +126,9 @@ class Jeu:
             keys = pygame.key.get_pressed() # On obtient toutes les touches pressées par le joueur
 
             
-
+            for projectile in projectiles: # Pour chaque projectile en jeu
+                 if projectile.is_out(): # Si le projectile est en dehors de l'écran
+                    projectile.kill() # Détruire le sprite du projectile
               
 
             for event in pygame.event.get(): # Pour chaque évènement intercepté durant la boucle de jeu
